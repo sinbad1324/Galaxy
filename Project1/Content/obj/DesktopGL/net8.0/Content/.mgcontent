@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/../../../../Downloads/Explosion.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/arial.spritefont</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/Avions1.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/background.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/block.jpg</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/BulgeBall.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/Enemis.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/fireShooter1.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/ghost.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/health.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/healthBoost.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/Prendre.jpg</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/speedBoost.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/speedline.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/TDM.png</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/TDM2.jpg</File>
+    <File>C:/Users/Mohammad izdpn/Desktop/Galaxy/Galaxy/Content/Textcursor.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File>Explosion.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>Logo.jpg</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
