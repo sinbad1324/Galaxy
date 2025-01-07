@@ -138,8 +138,7 @@ namespace Galaxy.Gui.GuiInterface
                 this.bg.Location = position.ToPoint(); 
                 childrens.Update();
             }
-            if (name == "HealthContainer")
-                Console.WriteLine(parent.position);
+
         }
         public virtual void LoadContent(ContentManager content, GraphicsDevice device)
         {

@@ -19,11 +19,12 @@ namespace Project1.InstancePlugin.UI
         Vertical
     }
 
-    public enum Alagniement {
+    public enum Alagniement
+    {
         Start,
         End,
         Center
-    
+
     }
 
     public class Flex : IGlobal
@@ -31,6 +32,25 @@ namespace Project1.InstancePlugin.UI
         public string name;
         public GlobalUI parent;
         public FlexAlagniement alagniement;
+        public Alagniement horizontalAlagniement
+        {
+            get { return _horizontalAlagniement; }
+            set
+            {
+                _horizontalAlagniement = value;
+                SetHorizontalAlagnement(value);
+            }
+        }
+        public Alagniement verticalAlagniement
+        {
+            get { return _verticalAlagniement; }
+            set
+            {
+                _verticalAlagniement = value;
+                SetVerticalAlagnement(value);
+            }
+        }
+
         public float padding;
         public bool flexWrap
         {
@@ -44,7 +64,8 @@ namespace Project1.InstancePlugin.UI
 
         }
 
-
+        private Alagniement _horizontalAlagniement;
+        private Alagniement _verticalAlagniement;
         private int parentChildrenCount;
         private Vector2 parentSize;
         private bool _wraping;
@@ -54,9 +75,36 @@ namespace Project1.InstancePlugin.UI
         private float maxHorizontalCount;
         private float maxVerticalCount;
 
+        private float minHorizontalCount;
+        private float minVerticalCount;
+
         private float maxYSize;
         private float maxXSize;
 
+        private void SetVerticalAlagnement(Alagniement value)
+        {
+            if (value == Alagniement.Start)
+                minVerticalCount = 0;
+            else if (value == Alagniement.Center)
+              {  minVerticalCount = parent.bgSize.Y / 4;
+                maxVerticalCount -= parent.bgSize.Y / 4;
+            }
+            else
+                minVerticalCount = parent.bgSize.Y / 2;
+            
+        }
+        private void SetHorizontalAlagnement(Alagniement value)
+        {
+            if (value == Alagniement.Start)
+                minHorizontalCount = 0;
+            else if (value == Alagniement.Center)
+            {
+                minHorizontalCount = parent.bgSize.X / 4;
+                maxHorizontalCount -= parent.bgSize.X / 4;
+            }
+            else
+                minHorizontalCount = parent.bgSize.X / 2;
+        }
         private void Wrap(bool value)
         {
             if (value == false)
@@ -69,6 +117,8 @@ namespace Project1.InstancePlugin.UI
                 maxHorizontalCount = parent.bgSize.X;
                 maxVerticalCount = parent.bgSize.Y;
             }
+            SetVerticalAlagnement(_verticalAlagniement);
+            SetHorizontalAlagnement(_horizontalAlagniement);
         }
 
         public Flex(GlobalUI parent, string name = "FlexBox", FlexAlagniement alagniement = FlexAlagniement.Auto, float padding = 0)
@@ -78,10 +128,11 @@ namespace Project1.InstancePlugin.UI
             this.alagniement = alagniement;
             this.padding = padding;
 
-            Console.WriteLine("FlexAdded");
         }
         public void Initialize()
         {
+            horizontalAlagniement = Alagniement.Center;
+            verticalAlagniement = Alagniement.Center;
             parentChildrenCount = 0;
             parentSize = new Vector2(0, 0);
             horizontalCount = 0;
@@ -106,7 +157,7 @@ namespace Project1.InstancePlugin.UI
                 if (child.bgSize.X >= bigX)
                     bigX = child.bgSize.X;
             }
-            return new Tuple<float , float >(bigX ,  bigY);
+            return new Tuple<float, float>(bigX, bigY);
         }
 
 
@@ -132,7 +183,7 @@ namespace Project1.InstancePlugin.UI
                     }
                     else
                     {
-                        horizontalCount = 0;
+                        horizontalCount = minHorizontalCount;
                         verticalCount += (maxYSize + padding);
                         Console.WriteLine(verticalCount);
                         i--;
@@ -166,7 +217,7 @@ namespace Project1.InstancePlugin.UI
                     }
                     else
                     {
-                        verticalCount = 0;
+                        verticalCount = minVerticalCount;
                         horizontalCount += (maxXSize + padding);
                         i--;
                     }
@@ -179,10 +230,10 @@ namespace Project1.InstancePlugin.UI
             if (parentChildrenCount != parent.childrens.container.Count || parentSize != parent.bgSize)
             {
                 Wrap(flexWrap);
-                horizontalCount = 0;
-                verticalCount = 0;
-               ( maxXSize, maxYSize) = getSizeYXMax();
-                Console.WriteLine(maxXSize +" , "+ maxYSize);
+                horizontalCount = minHorizontalCount;
+                verticalCount = minVerticalCount;
+                (maxXSize, maxYSize) = getSizeYXMax();
+                Console.WriteLine(maxXSize + " , " + maxYSize);
                 if (alagniement == FlexAlagniement.Horizontal)
                     Horizontal();
                 else if (alagniement == FlexAlagniement.Vertical)

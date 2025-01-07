@@ -24,7 +24,6 @@ namespace Galaxy.Gui.Images
 
         public override void LoadContent(ContentManager content, GraphicsDevice device) {
             base.LoadContent(content, device);
-            Console.WriteLine("Loaded"+this.name);
             if (!isLoaded)
             {
                 texture = content.Load<Texture2D>(imagePath);

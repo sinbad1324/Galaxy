@@ -165,8 +165,8 @@ namespace Galaxy.workspace
                 {
                     CreateEnemis();
                 }
-                //UpdatePlayer();
-                //UpdateEnemis();
+                UpdatePlayer();
+                UpdateEnemis();
             }
 
 
