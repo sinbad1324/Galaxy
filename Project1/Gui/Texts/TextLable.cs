@@ -31,6 +31,7 @@ namespace Galaxy.Gui.Texts
         public Color color;
         public int textTransparency;
         public float scale;
+        public Vector2 textSize;
         public Vector2 getTextPosition { get { return this.textPosition; } }
 
         public HorizontalTextAligne horizontalAligne
@@ -95,10 +96,8 @@ namespace Galaxy.Gui.Texts
         {
             if (Font.MeasureString(this.text).X > 0 && Font.MeasureString(this.text).Y > 0)
             {
-                Vector2 textSize = new Vector2(Font.MeasureString(this.text).X * scale, Font.MeasureString(this.text).Y * scale);
+                textSize = new Vector2(Font.MeasureString(this.text).X * scale, Font.MeasureString(this.text).Y * scale);
                 textPosition = this.position;
-                if (name == "tEXTLABLE")
-                    Console.WriteLine(((textPosition.X + bgSize.X) - textSize.X) +" ,Size  ");
                 //XXXXXXXXXXXXXXXXXXXXXXXX
                 if (this.horizontalAligne == HorizontalTextAligne.left)
                     textPosition = new Vector2(this.position.X , textPosition.Y);
@@ -139,6 +138,7 @@ namespace Galaxy.Gui.Texts
             base.Update();
             //    <-|-[*]-|->
             TextToBackground();
+
         }
         //render
         public override void DrawChildren(SpriteBatch target)

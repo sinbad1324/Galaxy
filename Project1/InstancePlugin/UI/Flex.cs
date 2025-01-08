@@ -71,7 +71,7 @@ namespace Project1.InstancePlugin.UI
         private bool _wraping;
         private float horizontalCount;
         private float verticalCount;
-
+        private Dictionary<string , float> childrensInfos;
         private float maxHorizontalCount;
         private float maxVerticalCount;
 
@@ -95,6 +95,7 @@ namespace Project1.InstancePlugin.UI
         }
         private void SetHorizontalAlagnement(Alagniement value)
         {
+
             if (value == Alagniement.Start)
                 minHorizontalCount = 0;
             else if (value == Alagniement.Center)
@@ -225,10 +226,33 @@ namespace Project1.InstancePlugin.UI
                 }
             }
         }
+        private Dictionary<string, float> GetAllChildrenSize()
+        {
+           Dictionary<string, float> result = new Dictionary<string, float>();
+           Vector2 Size = new Vector2(0,0);
+            float maxY = 0;
+            for (int i = 0; i < parent.childrens.container.Count; i++)
+            {
+                GlobalUI child = parent.childrens.container[i];
+                if (child != null) {
+                    maxY = maxY < child.bgSize.Y ? child.bgSize.Y : maxY;
+                    Size += child.bgSize; 
+                }
+            }
+            float Xsi = (maxHorizontalCount - minHorizontalCount);
+            result["totalSizeX"] = Size.X;
+            result["totalSizeY"] = Size.Y;
+            result["coucheY"] = (Size.X/ Xsi) *maxY;
+            result["couheX"] = Size.X > Xsi ? Xsi : Size.X;
+
+            return result;
+        }
         public void Update()
         {
             if (parentChildrenCount != parent.childrens.container.Count || parentSize != parent.bgSize)
             {
+                childrensInfos = GetAllChildrenSize();
+                Console.WriteLine(childrensInfos);
                 Wrap(flexWrap);
                 horizontalCount = minHorizontalCount;
                 verticalCount = minVerticalCount;
