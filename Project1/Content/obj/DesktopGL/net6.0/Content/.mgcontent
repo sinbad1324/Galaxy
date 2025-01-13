@@ -4,13 +4,13 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/moham/source/repos/Project1/Project1/Content/../../../../../Downloads/Explosion.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/arial.spritefont</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/Avions1.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/background.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/block.jpg</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/BulgeBall.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/Enemis.png</File>
+    <File>C:/Users/moham/source/repos/Project1/Project1/Content/Explosion.png.webp</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/fireShooter1.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/ghost.png</File>
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/health.png</File>
@@ -23,13 +23,13 @@
     <File>C:/Users/moham/source/repos/Project1/Project1/Content/Textcursor.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File>Explosion.png</File>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
