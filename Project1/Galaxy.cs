@@ -61,10 +61,10 @@ namespace Galaxy
 
         private void StopWorkspace()
         {
-            for (int i = 0; i < workspace.EnemisGroup.Count; i++)
-                workspace.EnemisGroup[i].Destroy();
-            workspace.EnemisGroup.Clear();
-            workspace.boosterContainer.Clear();
+            //for (int i = 0; i < workspace.EnemisGroup.Count; i++)
+            //    workspace.EnemisGroup[i].Destroy();
+            //workspace.EnemisGroup.Clear();
+            //workspace.boosterContainer.Clear();
             _IsPlaying = false;
         }
 
@@ -75,8 +75,6 @@ namespace Galaxy
             showRaids.bgSize = new Vector2(100, 30);
             showRaids.position = new Vector2(screenGui.screenWidth / 2 - 50, 0);
             showRaids.bgColor = Color.Transparent;
-
-
             _started = true;
             _IsPlaying = true;
 
@@ -152,7 +150,7 @@ namespace Galaxy
             }
             workspace.player.death += (object obj, EventArgs e) =>
             {
-                reStarted=0;               
+                reStarted=-1;               
                 if (reStarted <= 0)
                 {
                     StopWorkspace();

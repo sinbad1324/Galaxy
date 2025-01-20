@@ -28,8 +28,8 @@ namespace Galaxy.workspace.Objects
             base.init(workspace, name);
             shootContainer = new List<Part>();
             shootDelay = 400;
-            maxHealth = 100;
-            health = 100;
+            maxHealth = 1;
+            health = 1;
             speed = 10;
             MaxSpeed = 10;
             damage = 35;

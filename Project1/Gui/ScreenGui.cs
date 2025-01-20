@@ -49,25 +49,25 @@ namespace Galaxy.Gui
             Points.color = Color.White;
             CreateHealthContainer();
 
-            TextBox textLable = childrens.addTextBox("tEXTLABLE");
-            textLable.overflow = true;
-            textLable.horizontalAligne = HorizontalTextAligne.left;
-            textLable.bgSize = new Vector2(300, 300);
-            textLable.ClearTextOnFocus = false;
+            //TextBox textLable = childrens.addTextBox("tEXTLABLE");
+            //textLable.overflow = true;
+            //textLable.horizontalAligne = HorizontalTextAligne.left;
+            //textLable.bgSize = new Vector2(300, 300);
+            //textLable.ClearTextOnFocus = false;
 
-            ScrollingFarme scr = childrens.addScrollingFarme("scr" , new Vector2(20 , 50 ) ,new Vector2(500,500) , Color.White);
-            scr.Axe = ScrollingFrameDirection.X;
-            scr.CanvasSize = new Vector2(screenWidth, 0);
-            for (int i = 0; i < 50; i++)
-            {
-                ImageLable imgH = scr.childrens.addImageLable("health" + i, "health");
-                imgH.bgSize = new Vector2(40, 40);
-                imgH.position = new Vector2(((float)(40 * i) + 2f), 0);
-            }
-            Flex flex = scr.childrens.addFlexBox("flex" , FlexAlagniement.Horizontal , 5f);
-            flex.horizontalAlagniement = Alagniement.Center;
-            flex.verticalAlagniement = Alagniement.Center;
-            flex.flexWrap = true;
+            //ScrollingFarme scr = childrens.addScrollingFarme("scr" , new Vector2(20 , 50 ) ,new Vector2(500,500) , Color.White);
+            //scr.Axe = ScrollingFrameDirection.X;
+            //scr.CanvasSize = new Vector2(screenWidth, 0);
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    ImageLable imgH = scr.childrens.addImageLable("health" + i, "health");
+            //    imgH.bgSize = new Vector2(40, 40);
+            //    imgH.position = new Vector2(((float)(40 * i) + 2f), 0);
+            //}
+            //Flex flex = scr.childrens.addFlexBox("flex" , FlexAlagniement.Horizontal , 5f);
+            //flex.horizontalAlagniement = Alagniement.Center;
+            //flex.verticalAlagniement = Alagniement.Center;
+            //flex.flexWrap = true;
 
         }
         //Load content
