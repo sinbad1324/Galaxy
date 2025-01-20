@@ -65,8 +65,8 @@ namespace Galaxy.Gui
                 imgH.position = new Vector2(((float)(40 * i) + 2f), 0);
             }
             Flex flex = scr.childrens.addFlexBox("flex" , FlexAlagniement.Horizontal , 5f);
-            flex.horizontalAlagniement = Alagniement.Start;
-            flex.verticalAlagniement = Alagniement.Start;
+            flex.horizontalAlagniement = Alagniement.Center;
+            flex.verticalAlagniement = Alagniement.Center;
             flex.flexWrap = true;
 
         }
