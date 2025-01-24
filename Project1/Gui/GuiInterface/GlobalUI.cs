@@ -210,6 +210,7 @@ namespace Galaxy.Gui.GuiInterface
         right
     }
 
+
     public interface IGlobalParentUI
     {
         public Vector2 bgSize { get; set; }

@@ -23,17 +23,18 @@ namespace Galaxy.Gui
         public int screenWidth {  get; }
         public int screenHeight {get; }
         public GameWindow window;
+        public GalaxyMotor motor;
 
-
-        public ScreenGui(int _screenWidth, int _screenHeight , GameWindow window)
+        public ScreenGui(GalaxyMotor motor, int _screenWidth, int _screenHeight , GameWindow window)
         {
-
             childrens = new Container(this ,this);
             this.screenWidth = _screenWidth;
             this.screenHeight = _screenHeight;
             this.window = window;
+            screenGui = this;
             bgSize = new Vector2(screenWidth, screenHeight);
             position = new Vector2(0f, 0f);
+            this.motor = motor;
         }
 
     

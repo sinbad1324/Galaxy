@@ -10,6 +10,7 @@ using Galaxy.workspace.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Project1.Games.Galaxy;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace Galaxy.workspace
 {
     public class Workspace : global::Galaxy.modules.IGlobal, IGlobalParentObj
     {
-        public Galaxy game;
+        public GalaxyMotor game;
         public Random rd = new Random();
         public ObjectContainer childrens { get; set; }
         public Vector2 bgSize { get; set; }
@@ -46,7 +47,7 @@ namespace Galaxy.workspace
         }
 
       
-        public Workspace(int _screenWidth, int _screenHeight, Galaxy game)
+        public Workspace(int _screenWidth, int _screenHeight, GalaxyMotor game)
         {
             childrens = new  (this , this);
             boosterContainer = new List<booster>();
