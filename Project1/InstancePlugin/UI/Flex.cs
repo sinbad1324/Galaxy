@@ -18,22 +18,18 @@ namespace Project1.InstancePlugin.UI
         Horizontal,
         Vertical
     }
-
     public enum Alagniement
     {
         Start,
         End,
         Center
-
     }
-
     public class Flex : IGlobal
     {
         public string name;
         public GlobalUI parent;
         public FlexAlagniement alagniement;
         public float inSetPadding;
-
         public Alagniement horizontalAlagniement
         {
             get { return _horizontalAlagniement; }
@@ -75,13 +71,10 @@ namespace Project1.InstancePlugin.UI
         private Dictionary<string , float> childrensInfos;
         private float maxHorizontalCount;
         private float maxVerticalCount;
-
         private float minHorizontalCount;
         private float minVerticalCount;
-
         private float maxYSize;
         private float maxXSize;
-
         private void SetVerticalAlagnement(Alagniement value)
         {
             if (value == Alagniement.Start)
@@ -92,23 +85,23 @@ namespace Project1.InstancePlugin.UI
                 maxVerticalCount = float.IsInfinity(maxVerticalCount) ? float.PositiveInfinity : (parent.bgSize.Y / 2)  + childrensInfos["coucheY"] / 2;
             }
             else
-                minVerticalCount = parent.bgSize.Y / 2;
-            
+                minVerticalCount = parent.bgSize.Y / 2;    
         }
         private void SetHorizontalAlagnement(Alagniement value)
         {
-
             if (value == Alagniement.Start)
                 minHorizontalCount = 0;
             else if (value == Alagniement.Center)
             {
                 minHorizontalCount = (parent.bgSize.X / 2) - (childrensInfos["couheX"] / 2);
+
                 maxHorizontalCount = float.IsInfinity(maxHorizontalCount) ? float.PositiveInfinity : (parent.bgSize.X / 2) + childrensInfos["couheX"] / 2;
+
             }
             else
                 minHorizontalCount = parent.bgSize.X / 2;
         }
-        private void Wrap(bool value)
+       private void setDefaulMAXSIZE(bool value)
         {
             if (value == false)
             {
@@ -120,6 +113,10 @@ namespace Project1.InstancePlugin.UI
                 maxHorizontalCount = parent.bgSize.X;
                 maxVerticalCount = parent.bgSize.Y;
             }
+        }
+        private void Wrap(bool value)
+        {
+            setDefaulMAXSIZE(value);
             SetVerticalAlagnement(_verticalAlagniement);
             SetHorizontalAlagnement(_horizontalAlagniement);
         }
@@ -130,7 +127,6 @@ namespace Project1.InstancePlugin.UI
             this.alagniement = alagniement;
             this.padding = padding;
             childrensInfos = GetAllChildrenSize();
-
         }
         public void Initialize()
         {
@@ -150,13 +146,11 @@ namespace Project1.InstancePlugin.UI
         {
             float bigY = 0;
             float bigX = 0;
-
             for (int i = 0; i < parent.childrens.container.Count; i++)
             {
                 GlobalUI child = parent.childrens.container[i];
                 if (child.bgSize.Y >= bigY)
                     bigY = child.bgSize.Y;
-
                 if (child.bgSize.X >= bigX)
                     bigX = child.bgSize.X;
             }
@@ -251,18 +245,18 @@ namespace Project1.InstancePlugin.UI
             result["totalSizeY"] = Size.Y;
             result["coucheY"] = (Size.X/ Xsi) *maxY;
             result["couheX"] = Size.X > Xsi ? Xsi : Size.X;
-
             return result;
         }
         public void Update()
         {
             if (parentChildrenCount != parent.childrens.container.Count || parentSize != parent.bgSize)
             {
+                setDefaulMAXSIZE(flexWrap);
                 childrensInfos = GetAllChildrenSize();
                 Wrap(flexWrap);
-                (maxXSize, maxYSize) = getSizeYXMax();
                 horizontalCount = minHorizontalCount;
                 verticalCount = minVerticalCount;
+                (maxXSize, maxYSize) = getSizeYXMax();
 
                 if (alagniement == FlexAlagniement.Horizontal)
                     Horizontal();

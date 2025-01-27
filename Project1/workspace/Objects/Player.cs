@@ -28,8 +28,8 @@ namespace Galaxy.workspace.Objects
             base.init(workspace, name);
             shootContainer = new List<Part>();
             shootDelay = 400;
-            maxHealth = 100;
-            health = 100;
+            maxHealth = 1;
+            health = 1;
             speed = 10;
             MaxSpeed = 10;
             damage = 35;
@@ -80,89 +80,72 @@ namespace Galaxy.workspace.Objects
                     if (e.obj.humanoid != null)
                         e.obj.humanoid.Damage(dm);
                     points++;
-                
-                Flipbook animation = this.workspace.childrens.addFlipbook("Explosion", 8);
-                animation.position = newshoot.position - new Vector2(20, 100);
-                animation.interval = 0;
-                animation.Play();
-                animation.Finish.finished += (object obj, EventArgs args) =>
-                { animation.Destroy(); };
-            };
 
-            newshoot.boundaryColl.Touched += (object obj, EventArgs e) =>
+                    Flipbook animation = this.workspace.childrens.addFlipbook("Explosion", 8);
+                    animation.position = newshoot.position - new Vector2(20, 100);
+                    animation.interval = 0;
+                    animation.Play();
+                    animation.Finish.finished += (object obj, EventArgs args) =>
+                    { animation.Destroy(); };
+                };
+
+                newshoot.boundaryColl.Touched += (object obj, EventArgs e) =>
+                {
+                    newshoot.Destroy();
+                    shootContainer.Remove(newshoot);
+                };
+            }
+        }
+        private void KeyPressing()
+        {
+            KeyboardState keystate = Keyboard.GetState();
+
+            bool w = keystate.IsKeyDown(Keys.W) || keystate.IsKeyDown(Keys.Up);
+            bool s = keystate.IsKeyDown(Keys.S) || keystate.IsKeyDown(Keys.Down);
+            bool d = keystate.IsKeyDown(Keys.D) || keystate.IsKeyDown(Keys.Right);
+            bool a = keystate.IsKeyDown(Keys.A) || keystate.IsKeyDown(Keys.Left);
+
+            if ((w && d) || (s && d) || (w && a) || (s && a))
             {
-                newshoot.Destroy();
-                shootContainer.Remove(newshoot);
-            };
+                speed = MaxSpeed / 2;
+            }
+            else
+            {
+                speed = MaxSpeed;
+            }
+
+            if (w)
+                charchter.Move(0, -speed);
+            if (s)
+                charchter.Move(0, speed);
+
+            if (a)
+                charchter.Move(-speed, 0);
+            if (d)
+                charchter.Move(speed, 0);
+
+            if (keystate.IsKeyDown(Keys.Space))
+                Shoot();
         }
-    }
-
-    private void KeyPressing()
-    {
-        KeyboardState keystate = Keyboard.GetState();
-
-        bool w = keystate.IsKeyDown(Keys.W) || keystate.IsKeyDown(Keys.Up);
-        bool s = keystate.IsKeyDown(Keys.S) || keystate.IsKeyDown(Keys.Down);
-        bool d = keystate.IsKeyDown(Keys.D) || keystate.IsKeyDown(Keys.Right);
-        bool a = keystate.IsKeyDown(Keys.A) || keystate.IsKeyDown(Keys.Left);
-
-        if ((w && d) || (s && d) || (w && a) || (s && a))
+        public override void Initialize()
         {
-            speed = MaxSpeed / 2;
+            base.Initialize();
+            charchter.humanoid = this;
         }
-        else
+        public override void LoadContent(ContentManager content, GraphicsDevice device) { }
+        public override void Damage(float value)
         {
-            speed = MaxSpeed;
+            base.Damage(value);
+            if (health <= 0)
+                LunchDeath();
         }
-
-        if (w)
-            charchter.Move(0, -speed);
-        if (s)
-            charchter.Move(0, speed);
-
-        if (a)
-            charchter.Move(-speed, 0);
-        if (d)
-            charchter.Move(speed, 0);
-
-        if (keystate.IsKeyDown(Keys.Space))
-            Shoot();
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        charchter.humanoid = this;
-    }
-
-
-    public override void LoadContent(ContentManager content, GraphicsDevice device) { }
-
-
-
-    public override void Damage(float value)
-    {
-        base.Damage(value);
-        if (health <= 0)
+        public override void Update()
         {
-            LunchDeath();
+            KeyPressing();
+            base.Update();
         }
+
+        public override void Draw(SpriteBatch target) { base.Draw(target); }
+
     }
-
-
-
-
-    public override void Update()
-    {
-        KeyPressing();
-        // _health -= 1f;
-        base.Update();
-    }
-
-    public override void Draw(SpriteBatch target)
-    {
-        base.Draw(target);
-    }
-
-}
 }

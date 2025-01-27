@@ -47,7 +47,7 @@ namespace Galaxy
             screenGui = new ScreenGui(this, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, Window);
             workspace = new Workspace(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
             _started = false;
-            reStarted = 0;
+            reStarted = 5;
             raid = 0;
             _IsPlaying = true;
             _pausedWorkspace = false;
@@ -72,7 +72,7 @@ namespace Galaxy
         {
             if (!IsPlaying)
             {
-                if (reStarted <= 0){StopWorkspace();return;}
+                if (reStarted < 0){StopWorkspace();return;}
                 TextButton btn = StarterUI.RestartBtnComp(screenGui);
                 int totalTime = 1;
                 new Thread(() =>
@@ -92,8 +92,8 @@ namespace Galaxy
                         btn.Destroy();
                         btn = null;
                         ImageLable img = screenGui.childrens.FindChildren<ImageLable>("Tete de mort");
-                        //if (img != null)
-                        //    img.Destroy();
+                        if (img != null)
+                            img.Destroy();
 
                         for (int i = 0; i < workspace.EnemisGroup.Count; i++)
                         {
@@ -112,9 +112,9 @@ namespace Galaxy
             workspace.player.death += (object obj, EventArgs e) =>
             {
                 _IsPlaying = false;
+                reStarted -= 1;
                 Restart();
-                reStarted = -1;
-                if (reStarted <= 0) { StopWorkspace(); return; }
+                if (reStarted < 0) { StopWorkspace(); return; }
                 ImageLable img = screenGui.childrens.addImageLable("Tete de mort", "TDM2");
                 img.bgSize = new Vector2(300, 300);
                 img.position = new Vector2(workspace.screenWidth / 2 - 150, -100);
@@ -126,6 +126,8 @@ namespace Galaxy
                         Thread.Sleep(10);
                         img.position = Utils.GetDirectionSpeed(img.position, new Vector2(workspace.screenWidth / 2 - 150, workspace.screenHeight / 2 - 150), (float)totalTime, (float)i);
                     }
+                    Thread.Sleep(30);
+                    img.Destroy();
                 }).Start();
             };
         }
