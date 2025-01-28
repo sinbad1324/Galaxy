@@ -130,8 +130,8 @@ namespace Project1.InstancePlugin.UI
         }
         public void Initialize()
         {
-            horizontalAlagniement = Alagniement.Center;
-            verticalAlagniement = Alagniement.Center;
+            horizontalAlagniement = Alagniement.Start;
+            verticalAlagniement = Alagniement.Start;
             parentChildrenCount = 0;
             parentSize = new Vector2(0, 0);
             horizontalCount = 0;
@@ -139,7 +139,7 @@ namespace Project1.InstancePlugin.UI
             maxYSize = 0;
             maxXSize = 0;
             flexWrap = false;
-            inSetPadding = 50;
+            inSetPadding = 0;
         }
         public void LoadContent(ContentManager content, GraphicsDevice device) { }
         private Tuple<float, float> getSizeYXMax()

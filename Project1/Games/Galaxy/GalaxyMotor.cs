@@ -137,6 +137,8 @@ namespace Galaxy
             base.Initialize();
             screenGui.Initialize();
             workspace.Initialize();
+            StarterUI.CreateHealthContainer(screenGui , 5);
+            StarterUI.Form(screenGui);
             PlayerDeath();
             float scale = 1.2f;
             TextButton startbtn = StarterUI.StartBtn(screenGui);

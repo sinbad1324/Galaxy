@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection.Metadata;
 using Project1.InstancePlugin.UI;
+using System.Reflection;
 
 namespace Galaxy.Gui
 {
@@ -59,6 +60,7 @@ namespace Galaxy.Gui
         {
             ImageLable textLable = new ImageLable(ScreenGui, parent, name, imagePath);
             textLable.Initialize();
+            //Prob
             if (Content != null && device != null)
             {
                 textLable.LoadContent(this.Content, device);
@@ -72,6 +74,7 @@ namespace Galaxy.Gui
         {
             TextButton btn = new TextButton(ScreenGui, parent, name, text, font);
             btn.Initialize();
+            //Prob
             if (Content != null && device != null)
             {
                 btn.LoadContent(this.Content, device);
@@ -84,6 +87,7 @@ namespace Galaxy.Gui
         public TextBox addTextBox(string name = "TextBox", string text = "Text...", string font = "arial")
         {
             TextBox textBox = new TextBox(ScreenGui, parent, name, text, font);
+            textBox.zIndex = 1;
             textBox.Initialize();
             if (Content != null && device != null)
             {
@@ -110,6 +114,9 @@ namespace Galaxy.Gui
         public Frame addFrame(string name, Vector2 position, Vector2 size, Color color)
         {
             Frame frame = new Frame(this.ScreenGui, parent, name, position, size, color);
+            frame.bgColor = color;
+            frame.bgSize = size;
+            frame.position = position;
             if (Content != null && device != null)
             {
                 frame.LoadContent(this.Content, device);

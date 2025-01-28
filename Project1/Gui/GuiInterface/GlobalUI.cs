@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Linq;
+using System.Threading;
 using Galaxy.Events;
 using Galaxy.Gui.Frames;
 using Galaxy.modules;
@@ -58,10 +59,18 @@ namespace Galaxy.Gui.GuiInterface
             set
             {
                 _zIndex = value;
-                parent.childrens.container = screenGui.childrens.container.OrderBy(i => i.zIndex).ToList();
+                    ZIndexFunc();
+                new Thread(() =>
+                {
+                    Thread.Sleep(1000);
+                    for (int i = 0; i < parent.childrens.container.Count; i++)
+                    {
+                        Console.WriteLine(parent.childrens.container[i].name + "__" + i);
+                    }
+                }).Start();
             }
         }
-
+   
         //events
         public Events.BoundaryColl boundaryColl;
         public Events.HoverEvent hover;
@@ -111,14 +120,18 @@ namespace Galaxy.Gui.GuiInterface
             ///    Console.WriteLine(Ypos);
             position = new Vector2(Xpos, Ypos);
         }
-
+        private void ZIndexFunc()
+        {
+            if (parent != null && parent.childrens.container.Count >= 2)
+                parent.childrens.container = screenGui.childrens.container.OrderBy(i => i.zIndex).ToList();
+        }
         //Update
         public virtual void Update()
         {
            
             if (texture != null && bg != Rectangle.Empty)
             {      
-                if (Utils.Intersection(this.position, bgSize, Mouse.GetState().Position.ToVector2()))
+                if (bg.Contains(Mouse.GetState().Position.ToVector2()))
                 {
                     isHover = true;
                     hoverIsLeave = false;
@@ -148,6 +161,7 @@ namespace Galaxy.Gui.GuiInterface
         public virtual void Initialize()
         {
             childrens.Initialize();
+
         }
         //draw
         public virtual void Draw(SpriteBatch target) { }
@@ -168,7 +182,6 @@ namespace Galaxy.Gui.GuiInterface
         protected void BgInit(GlobalUI parent)
         {
             overflow = false;
-            _zIndex = 1;
             this.parent = parent;
             isHover = false;
             boundaryCollEventLunched = new Vector2(0, 0);
@@ -183,6 +196,9 @@ namespace Galaxy.Gui.GuiInterface
             bg = new Rectangle((int)position.X, (int)position.Y, (int)bgSize.X, (int)bgSize.Y);
             childrens = new Container(screenGui, this);
             this.rasterizerState = new RasterizerState { ScissorTestEnable = overflow };
+            //  zIndex = 1;
+            _zIndex = 1;
+         //   ZIndexFunc();
         }
 
 

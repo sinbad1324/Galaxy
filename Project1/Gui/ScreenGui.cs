@@ -48,47 +48,10 @@ namespace Galaxy.Gui
             TextLable Points= childrens.addTextLable( "Points" , "Points");
             Points.bgColor = Color.Black;
             Points.color = Color.White;
-            CreateHealthContainer();
-
-            TextBox textLable = childrens.addTextBox("tEXTLABLE");
-            textLable.overflow = true;
-            textLable.horizontalAligne = HorizontalTextAligne.left;
-            textLable.bgSize = new Vector2(300, 300);
-            textLable.ClearTextOnFocus = false;
-
-            ScrollingFarme scr = childrens.addScrollingFarme("scr", new Vector2(20, 50), new Vector2(500, 500), Color.White);
-            scr.Axe = ScrollingFrameDirection.X;
-            scr.CanvasSize = new Vector2(screenWidth, 0);
-            for (int i = 0; i < 50; i++)
-            {
-                ImageLable imgH = scr.childrens.addImageLable("health" + i, "health");
-                imgH.bgSize = new Vector2(40, 40);
-                imgH.position = new Vector2(((float)(40 * i) + 2f), 0);
-            }
-            Flex flex = scr.childrens.addFlexBox("flex", FlexAlagniement.Horizontal, 5f);
-            flex.horizontalAlagniement = Alagniement.Center;
-            flex.verticalAlagniement = Alagniement.Center;
-            flex.flexWrap = true;
-            flex.inSetPadding = 500;
         }
         //Load content
         //Setters
-        private void CreateHealthContainer()
-        {
-            Frame healthContainer = childrens.addFrame("HealthContainer", new Vector2(0, 0), new Vector2(200, 40), Color.Yellow);
-            healthContainer.position = new Vector2(screenWidth - 205, 5);
-            healthContainer.bgSize = new Vector2(200, 40);
-            healthContainer.overflow = false;
-            healthContainer.bgColor = Color.Transparent;
-            for (int i = 0; i < 5; i++)
-            {
-                ImageLable imgH = healthContainer.childrens.addImageLable("health" + i, "health");
-                imgH.bgSize = new Vector2(40, 40);
-                imgH.position = new Vector2(((float)(40 * i) + 2f), 0);
-            }
 
-
-        }
         public override void LoadContent(ContentManager content, GraphicsDevice device)
         {
             this.childrens.LoadContent(content, device);

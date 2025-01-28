@@ -30,8 +30,9 @@ namespace Galaxy.Gui.Frames
             }
         }
         public override void Update() {
-            if (texture != null)    
-                texture.SetData<Color>(new Color[] { bgColor });    
+            if (texture != null )
+                texture.SetData<Color>(new Color[] { bgColor });
+        
             base.Update();
         }
         public override void Draw(SpriteBatch target) {

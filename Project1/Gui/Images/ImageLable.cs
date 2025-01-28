@@ -35,7 +35,6 @@ namespace Galaxy.Gui.Images
 
         public override void Update()
         {
-  
             base.Update();
            // Console.WriteLine(bg.Location);
         }
