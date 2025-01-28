@@ -28,11 +28,12 @@ namespace Galaxy.Gui.Frames
                 this.texture = new Texture2D(device, 1, 1);
                 isLoaded = false;
             }
+    
         }
         public override void Update() {
-            if (texture != null )
+            if (texture != null)
                 texture.SetData<Color>(new Color[] { bgColor });
-        
+
             base.Update();
         }
         public override void Draw(SpriteBatch target) {

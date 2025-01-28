@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/moham/source/repos/Project1/Project1/Content/background.png</SourceFile>
-  <SourceTime>2024-11-25T14:58:54+01:00</SourceTime>
-  <DestFile>C:/Users/moham/source/repos/Project1/Project1/Content/bin/Windows/background.xnb</DestFile>
-  <DestTime>2024-12-30T14:58:40.695848+01:00</DestTime>
+  <SourceFile>C:/Users/moham/Desktop/Galaxy/Project1/Content/background.png</SourceFile>
+  <SourceTime>2025-01-28T19:34:29.1418472+01:00</SourceTime>
+  <DestFile>C:/Users/moham/Desktop/Galaxy/Project1/Content/bin/Windows/background.xnb</DestFile>
+  <DestTime>2025-01-28T21:08:54.2615904+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -27,7 +27,7 @@ namespace Project1.Games.Galaxy.component
             StartBtn.position = new Vector2((parent.screenGui.screenWidth / 2) - 100, parent.screenGui.screenHeight / 2 + 30);
             StartBtn.verticalAligne = VerticalTextAligne.verticalCenter;
             StartBtn.horizontalAligne = HorizontalTextAligne.harizontalCenter;
-            StartBtn.zIndex = 2;
+            StartBtn.zIndex = 0;
             float scale = 1.2f;
             StartBtn.hover.Hover += (object obj, HoverEventArgs e) =>
             {
@@ -61,18 +61,26 @@ namespace Project1.Games.Galaxy.component
             Vector2 parentSize = new Vector2(400,400);
             Frame parentDiv = parent.childrens.addFrame("UserForm" , parent.bgSize/2- parentSize/2 , parentSize , Color.AliceBlue);
             parentDiv.zIndex = 5;
-            TextBox userName = parentDiv.childrens.addTextBox("tbx user name" , "User Name");
+            // Legend
+            TextLable Title = parentDiv.childrens.addTextLable("Title", "User Form", "Font/CSMSG");
+            Title.bgSize = new Vector2(300, 75);
+            Title.horizontalAligne = HorizontalTextAligne.harizontalCenter;
+            Title.verticalAligne = VerticalTextAligne.verticalCenter;
+            Title.bgColor = Color.Transparent;
+            // User Name
+            TextBox userName = parentDiv.childrens.addTextBox("tbx user name" , "User Name", "Font/CSMSG");
             userName.bgSize =new Vector2(300 , 75);
             userName.horizontalAligne = HorizontalTextAligne.harizontalCenter;
             userName.verticalAligne = VerticalTextAligne.verticalCenter;
             userName.overflow = true;
-
-            TextBox userPassword = parentDiv.childrens.addTextBox("tbx user password", "Password");
+            // Password
+            TextBox userPassword = parentDiv.childrens.addTextBox("tbx user password", "Password", "Font/CSMSG");
             userPassword.bgSize = new Vector2(300, 75);
             userPassword.horizontalAligne = HorizontalTextAligne.harizontalCenter;
             userPassword.verticalAligne = VerticalTextAligne.verticalCenter;
             userPassword.overflow = true;
-            TextButton submit = parentDiv.childrens.addTextButton("btn submit", "Submit");
+            // Submit
+            TextButton submit = parentDiv.childrens.addTextButton("btn submit", "Submit" , "Font/CSMSG");
             submit.bgSize = new Vector2(300, 75);
             submit.horizontalAligne = HorizontalTextAligne.harizontalCenter;
             submit.verticalAligne = VerticalTextAligne.verticalCenter;

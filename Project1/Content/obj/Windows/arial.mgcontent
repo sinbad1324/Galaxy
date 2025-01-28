@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/moham/source/repos/Project1/Project1/Content/arial.spritefont</SourceFile>
-  <SourceTime>2022-07-26T12:44:10+01:00</SourceTime>
-  <DestFile>C:/Users/moham/source/repos/Project1/Project1/Content/bin/Windows/arial.xnb</DestFile>
-  <DestTime>2024-12-30T14:58:39.8730825+01:00</DestTime>
+  <SourceFile>C:/Users/moham/Desktop/Galaxy/Project1/Content/arial.spritefont</SourceFile>
+  <SourceTime>2025-01-28T19:34:29.1352514+01:00</SourceTime>
+  <DestFile>C:/Users/moham/Desktop/Galaxy/Project1/Content/bin/Windows/arial.xnb</DestFile>
+  <DestTime>2025-01-28T21:08:53.7017109+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

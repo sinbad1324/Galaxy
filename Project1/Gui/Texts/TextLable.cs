@@ -100,14 +100,14 @@ namespace Galaxy.Gui.Texts
                 textPosition = this.position;
                 //XXXXXXXXXXXXXXXXXXXXXXXX
                 if (this.horizontalAligne == HorizontalTextAligne.left)
-                    textPosition = new Vector2(this.position.X , textPosition.Y);
+                    textPosition = new Vector2(this.position.X, textPosition.Y);
                 else if (this.horizontalAligne == HorizontalTextAligne.right)
-                    textPosition = new Vector2( ((textPosition.X + bgSize.X) - textSize.X), textPosition.Y);
+                    textPosition = new Vector2(((textPosition.X + bgSize.X) - textSize.X), textPosition.Y);
                 else if (this.horizontalAligne == HorizontalTextAligne.harizontalCenter)
                     textPosition = new Vector2((textPosition.X + bgSize.X / 2) - textSize.X / 2, textPosition.Y);
                 // YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY   
                 if (this.verticalAligne == VerticalTextAligne.top)
-                    textPosition = new Vector2(this.textPosition.X, position.Y );
+                    textPosition = new Vector2(this.textPosition.X, position.Y);
                 else if (this.verticalAligne == VerticalTextAligne.bottom)
                     textPosition = new Vector2(textPosition.X, (textPosition.Y + bgSize.Y) - textSize.Y);
                 else if (this.verticalAligne == VerticalTextAligne.verticalCenter)
@@ -141,14 +141,14 @@ namespace Galaxy.Gui.Texts
 
         }
         //render
+        private bool isRender = false;
         public override void DrawChildren(SpriteBatch target)
         {
-
             target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
             target.GraphicsDevice.ScissorRectangle = bg;
             if (Font != null)
+                childrens.Draw(target);
                 target.DrawString(this.Font, this.text, this.textPosition, this.color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            childrens.Draw(target);
             target.End();
 
             for (int i = 0; i < childrens.container.Count; i++)

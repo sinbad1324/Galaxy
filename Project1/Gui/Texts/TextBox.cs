@@ -100,25 +100,23 @@ namespace Galaxy.Gui.Texts
                 pressed = true;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (Utils.Intersection(this.position, bgSize, mgs.Position.ToVector2()))
+                    if (bg.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.PressedAction();
                     }
                 }
             }
-
             if (pressed && mgs.LeftButton == ButtonState.Released)
             {
                 pressed = false;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (Utils.Intersection(this.position, bgSize, mgs.Position.ToVector2()))
+                    if (bg.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.UnPressedAction();
                     }
                 }
             }
-
             //Key
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Enter))
@@ -131,7 +129,15 @@ namespace Galaxy.Gui.Texts
                         NewText = new StringBuilder();
                 }
             }
-
+            if (mgs.LeftButton == ButtonState.Pressed || mgs.RightButton == ButtonState.Pressed)
+                if (!bg.Contains(mgs.Position))
+                    if (clicked)
+                    {
+                        clicked = false;
+                        FocusedEvent.Action(NewText.ToString());
+                        if (ClearTextOnFocus)
+                            NewText = new StringBuilder();
+                    }
         }
         //Public
         public override void DestroyVariables()

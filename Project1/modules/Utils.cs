@@ -4,16 +4,16 @@ namespace Galaxy.modules
 {
     public class Utils
     {
-       public static bool Intersection(Vector2 Position , Vector2 Size , Vector2 PointCompare) {
-            float start = Position.Length();     
-            float disance = PointCompare.Length() - start;
-            if (disance >= 0 && PointCompare.X <= (Position.X+Size.X) && PointCompare.Y <= (Position.Y + Size.Y))
-            {
-            return true;
+       //public static bool Intersection(Vector2 Position , Vector2 Size , Vector2 PointCompare) {
+       //     float start = Position.Length();     
+       //     float disance = PointCompare.Length() - start;
+       //     if (disance >= 0 && PointCompare.X <= (Position.X+Size.X) && PointCompare.Y <= (Position.Y + Size.Y))
+       //     {
+       //     return true;
 
-            }
-            return false;
-        }
+       //     }
+       //     return false;
+       // }
 
         public static Vector2 GetDirectionSpeed(Vector2 a, Vector2 b, float totalTime, float currentTime)
         {

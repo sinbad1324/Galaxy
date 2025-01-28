@@ -141,18 +141,18 @@ namespace Galaxy
             StarterUI.Form(screenGui);
             PlayerDeath();
             float scale = 1.2f;
-            TextButton startbtn = StarterUI.StartBtn(screenGui);
-            startbtn.Button1Click.UnPressed += (object obj, EventArgs e) =>
-             {
-                 scale = 1f;
-                 startbtn.bgSize = new Vector2(200f * scale, 50f * scale);
-                 startbtn.position = new Vector2((screenGui.screenWidth / 2) - 100, screenGui.screenHeight / 2 + 30 * scale);
-                 _started = true;
-                 reStarted = 5;
-                 Start(screenGui);
-                 _pausedWorkspace = true;
-                startbtn.Destroy();
-             };
+            //TextButton startbtn = StarterUI.StartBtn(screenGui);
+            //startbtn.Button1Click.UnPressed += (object obj, EventArgs e) =>
+            // {
+            //     scale = 1f;
+            //     startbtn.bgSize = new Vector2(200f * scale, 50f * scale);
+            //     startbtn.position = new Vector2((screenGui.screenWidth / 2) - 100, screenGui.screenHeight / 2 + 30 * scale);
+            //     _started = true;
+            //     reStarted = 5;
+            //     Start(screenGui);
+            //     _pausedWorkspace = true;
+            //    startbtn.Destroy();
+            // };
         }
 
         protected override void LoadContent()

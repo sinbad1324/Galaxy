@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Galaxy.Events;
@@ -58,20 +60,10 @@ namespace Galaxy.Gui.GuiInterface
             get { return _zIndex; }
             set
             {
-                _zIndex = value;
-                    ZIndexFunc();
-                new Thread(() =>
-                {
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < parent.childrens.container.Count; i++)
-                    {
-                        Console.WriteLine(parent.childrens.container[i].name + "__" + i);
-                    }
-                }).Start();
+              _zIndex = value;
+               ZIndexFunc();
             }
-        }
-   
-        //events
+        }       //events
         public Events.BoundaryColl boundaryColl;
         public Events.HoverEvent hover;
         public Vector2 boundaryCollEventLunched;
@@ -123,14 +115,16 @@ namespace Galaxy.Gui.GuiInterface
         private void ZIndexFunc()
         {
             if (parent != null && parent.childrens.container.Count >= 2)
-                parent.childrens.container = screenGui.childrens.container.OrderBy(i => i.zIndex).ToList();
+               { List<GlobalUI> tempContainer = screenGui.childrens.container.OrderBy(i => i.zIndex).ToList();
+                parent.childrens.container = tempContainer;
+            }
+
         }
         //Update
         public virtual void Update()
         {
-           
             if (texture != null && bg != Rectangle.Empty)
-            {      
+            {
                 if (bg.Contains(Mouse.GetState().Position.ToVector2()))
                 {
                     isHover = true;
@@ -145,10 +139,10 @@ namespace Galaxy.Gui.GuiInterface
                     hover.EventHoverLeaveAction();
                 }
                 float Diff = new Vector2(screenGui.screenWidth, screenGui.screenHeight).Length() - position.Length();
-                if (Diff <= 1)              
-                    boundaryCollEventLunched = new Vector2(0, 0);     
+                if (Diff <= 1)
+                    boundaryCollEventLunched = new Vector2(0, 0);
                 this.bg.Size = new Point((int)this.bgSize.X, (int)this.bgSize.Y);
-                this.bg.Location = position.ToPoint(); 
+                this.bg.Location = position.ToPoint();
                 childrens.Update();
             }
 
@@ -165,8 +159,10 @@ namespace Galaxy.Gui.GuiInterface
         }
         //draw
         public virtual void Draw(SpriteBatch target) { }
+        private bool isRender = false;
         public virtual void DrawChildren(SpriteBatch target)
         {
+            
             target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
             target.GraphicsDevice.ScissorRectangle = bg;
             childrens.Draw(target);
@@ -198,7 +194,6 @@ namespace Galaxy.Gui.GuiInterface
             this.rasterizerState = new RasterizerState { ScissorTestEnable = overflow };
             //  zIndex = 1;
             _zIndex = 1;
-         //   ZIndexFunc();
         }
 
 

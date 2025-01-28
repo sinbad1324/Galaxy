@@ -104,6 +104,13 @@
 /processorParam:TextureFormat=Color
 /build:fireShooter1.png
 
+#begin Font/CSMSG.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/CSMSG.spritefont
+
 #begin ghost.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -55,7 +55,7 @@ namespace Galaxy.Gui.Texts
                 pressed = true;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (Utils.Intersection(this.position, bgSize, mgs.Position.ToVector2()))
+                    if (bg.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.PressedAction();
                     }
@@ -67,7 +67,7 @@ namespace Galaxy.Gui.Texts
                 pressed = false;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (Utils.Intersection(this.position, bgSize, mgs.Position.ToVector2()))
+                    if (bg.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.UnPressedAction();
                     }
