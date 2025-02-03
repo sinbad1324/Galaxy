@@ -8,6 +8,8 @@ using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 
+
+
 namespace Galaxy.Gui.Frames
 {
     public class Frame:GlobalUI , IGlobal
@@ -24,6 +26,7 @@ namespace Galaxy.Gui.Frames
             base.BgInit(parent);
         }
 
+    
         public override void LoadContent(ContentManager content, GraphicsDevice device) {
             base.LoadContent(content, device);
             if (isLoaded)
