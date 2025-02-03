@@ -27,7 +27,7 @@ namespace Project1.Games.Galaxy.component
             StartBtn.position = new Vector2((parent.screenGui.screenWidth / 2) - 100, parent.screenGui.screenHeight / 2 + 30);
             StartBtn.verticalAligne = VerticalTextAligne.verticalCenter;
             StartBtn.horizontalAligne = HorizontalTextAligne.harizontalCenter;
-            StartBtn.zIndex = 0;
+            StartBtn.zIndex = 5;
             float scale = 1.2f;
             StartBtn.hover.Hover += (object obj, HoverEventArgs e) =>
             {
@@ -79,12 +79,14 @@ namespace Project1.Games.Galaxy.component
             userPassword.horizontalAligne = HorizontalTextAligne.harizontalCenter;
             userPassword.verticalAligne = VerticalTextAligne.verticalCenter;
             userPassword.overflow = true;
+            userPassword.zIndex = 5;
             // Submit
             TextButton submit = parentDiv.childrens.addTextButton("btn submit", "Submit" , "Font/CSMSG");
             submit.bgSize = new Vector2(300, 75);
             submit.horizontalAligne = HorizontalTextAligne.harizontalCenter;
             submit.verticalAligne = VerticalTextAligne.verticalCenter;
             submit.overflow = true;
+            submit.zIndex = 2;
             submit.Button1Click.Pressed += (object seder, EventArgs e) =>
             {
                 data["name"] = userName.text;

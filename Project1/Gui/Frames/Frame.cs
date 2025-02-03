@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Threading;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Galaxy.Gui.Frames
 {
@@ -28,7 +31,18 @@ namespace Galaxy.Gui.Frames
                 this.texture = new Texture2D(device, 1, 1);
                 isLoaded = false;
             }
-    
+            //new Thread(() => {
+            //    Thread.Sleep(2000);
+
+            //    List<GlobalUI> ff = childrens.container.OrderBy(i => i.zIndex).ToList();
+            //    for (int i = 0; i < ff.Count; i++)
+            //    {
+            //        Console.WriteLine(ff[i].zIndex);
+            //    }
+            //    childrens.container.Clear();
+            //    childrens.container = ff;
+
+            //}).Start();
         }
         public override void Update() {
             if (texture != null)

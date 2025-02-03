@@ -62,6 +62,7 @@ namespace Galaxy.Gui.GuiInterface
             {
               _zIndex = value;
                ZIndexFunc();
+
             }
         }       //events
         public Events.BoundaryColl boundaryColl;
@@ -115,10 +116,11 @@ namespace Galaxy.Gui.GuiInterface
         private void ZIndexFunc()
         {
             if (parent != null && parent.childrens.container.Count >= 2)
-               { List<GlobalUI> tempContainer = screenGui.childrens.container.OrderBy(i => i.zIndex).ToList();
+            {
+                List<GlobalUI> tempContainer = parent.childrens.container.OrderBy(i => i.zIndex).ToList();
                 parent.childrens.container = tempContainer;
-            }
 
+            }
         }
         //Update
         public virtual void Update()
@@ -192,8 +194,8 @@ namespace Galaxy.Gui.GuiInterface
             bg = new Rectangle((int)position.X, (int)position.Y, (int)bgSize.X, (int)bgSize.Y);
             childrens = new Container(screenGui, this);
             this.rasterizerState = new RasterizerState { ScissorTestEnable = overflow };
-            //  zIndex = 1;
-            _zIndex = 1;
+              zIndex = 1;
+            //_zIndex = 1;
         }
 
 

@@ -11,7 +11,9 @@ using Project1.InstancePlugin.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 
 
@@ -48,6 +50,7 @@ namespace Galaxy.Gui
             TextLable Points= childrens.addTextLable( "Points" , "Points");
             Points.bgColor = Color.Black;
             Points.color = Color.White;
+     
         }
         //Load content
         //Setters
@@ -59,6 +62,7 @@ namespace Galaxy.Gui
         //update
         public override void Update()
         {
+
             this.childrens.Update();
         }
         //render
