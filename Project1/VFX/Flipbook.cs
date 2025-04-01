@@ -29,7 +29,7 @@ namespace Galaxy.VFX
         private bool isPaused;
         public int interval;
         public FlipbookFinished Finish;
-    
+        public bool isFinishedDestroy=false;
         private void NextFrame()
         {
             activeFrame++;
@@ -43,7 +43,7 @@ namespace Galaxy.VFX
                 rowPos++;
             }
         }
-        public Flipbook( int columns, string path, string name, int id, IGlobalParentObj parent)
+        public Flipbook( int columns, string path, string name, IGlobalParentObj parent)
         {
             rotation = 0;
             this.parent = parent;
@@ -67,7 +67,7 @@ namespace Galaxy.VFX
         }
         public override void Update()
         {
-            if (isPaused) return;
+            if (isPaused || this.columns < 1) return;
             Counter++;
             if (Counter > interval)
             {
@@ -89,6 +89,8 @@ namespace Galaxy.VFX
             Pause();
             Reset();
             Finish.Action();
+            if (isFinishedDestroy)
+                Destroy();
         }
 
         public void Play()

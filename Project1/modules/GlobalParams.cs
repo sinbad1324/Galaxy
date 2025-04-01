@@ -27,5 +27,8 @@ namespace LearnMatrix
         static public GameWindow GameWindow;
         static public Random random = new Random();
         static public List<Delay> delays = new();
+         static public GameTime UpdateTime;
+         static public GameTime DrawTime;
+
     }
 }

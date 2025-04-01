@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>D:/Galaxy/Project1/Content/block.jpg</SourceFile>
-  <SourceTime>2025-03-18T20:54:51.401+01:00</SourceTime>
+  <SourceTime>2025-04-01T09:27:13.5065034+02:00</SourceTime>
   <DestFile>D:/Galaxy/Project1/Content/bin/DesktopGL/Content/block.xnb</DestFile>
-  <DestTime>2025-03-31T11:24:47.2030317+02:00</DestTime>
+  <DestTime>2025-04-01T09:27:24.2842588+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

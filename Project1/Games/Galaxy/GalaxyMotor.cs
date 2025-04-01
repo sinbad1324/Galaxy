@@ -194,7 +194,7 @@ using LearnMatrix;
         protected override void Update(GameTime gameTime)
         {
             UpdateTimers(gameTime);
-
+            GlobalParams.UpdateTime = gameTime;
             if (Keyboard.GetState().IsKeyDown(Keys.Y) && !clicked)
             {
                 if (GlobalParams.globalFillMode == FillMode.Solid)
@@ -229,6 +229,7 @@ using LearnMatrix;
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            GlobalParams.DrawTime = gameTime;
             // plan 2  
             //if (_IsPlaying && _started)
                 workspace.Draw();

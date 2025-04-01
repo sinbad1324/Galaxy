@@ -43,7 +43,7 @@ namespace Galaxy.workspace
 
         public Flipbook addFlipbook(string path= "8x8-Explosion", int colums = 8, string name = "Flipbook" )
         {
-            Flipbook flipbook = new Flipbook( colums , path, name , container.Count+1 , parent);
+            Flipbook flipbook = new Flipbook( colums , path, name , parent);
                 flipbook.LoadContent();
 
             container.Add(flipbook);
