@@ -8,6 +8,7 @@ using Galaxy.Events;
 
 using System.Collections.Generic;
 using System.Threading;
+using LearnMatrix;
 
 
 
@@ -22,13 +23,11 @@ namespace Galaxy.workspace.Objects
     public class booster :IGlobal
     {
         private Random rd = new Random();
-        protected Workspace workspace;
         public string name;
 
         public BoosterType type;
         public Part body;
         protected string texture;
-        private float speed;
         private float rotate;
 
         private BoosterType NewType()
@@ -45,44 +44,45 @@ namespace Galaxy.workspace.Objects
 
         private void Colision() {
             List<GlobalObject> l = new List<GlobalObject>();
-            l.Add(workspace.player.charchter);
-            body.CreateColisionGroupe(l);
+            l.Add(GlobalParams.Workspace.player.charchter);
+            body.CreateColisionGroupe(l , "WithPlayers");
 
             body.colision.touched += (object obj, TouchArgs e) =>
             {
-
+                if (e.ActionName != "WithPlayers")
+                    return;
+                
                 body.Destroy();
-                workspace.boosterContainer.Remove(this);
+                GlobalParams.Workspace.boosterContainer.Remove(this);
                 if (type == BoosterType.speed)
                 {
-                    int currentDelay = workspace.player.shootDelay;
-                    float currentSpeed = workspace.player.speed;
-                    workspace.player.charchter.SpriteColor = Color.Red;
-                    workspace.player.shootDelay = 100;
-                    workspace.player.speed = 30;
+                    int currentDelay = GlobalParams.Workspace.player.shootDelay;
+                    float currentSpeed = GlobalParams.Workspace.player.speed;
+                    GlobalParams.Workspace.player.charchter.SpriteColor = Color.Red;
+                    GlobalParams.Workspace.player.shootDelay = 100;
+                    GlobalParams.Workspace.player.speed = 30;
                     new Thread(() =>
                     {
                         Thread.Sleep(rd.Next(5, 9) * 1000);
-                        workspace.player.shootDelay = currentDelay;
-                        workspace.player.speed = currentSpeed;
-                        workspace.player.charchter.SpriteColor = Color.White;
+                        GlobalParams.Workspace.player.shootDelay = currentDelay;
+                        GlobalParams.Workspace.player.speed = currentSpeed;
+                        GlobalParams.Workspace.player.charchter.SpriteColor = Color.White;
                     }).Start();
 
                 }else if (type == BoosterType.health) {
-                    workspace.player.health = workspace.player.maxHealth;
+                    GlobalParams.Workspace.player.health = GlobalParams.Workspace.player.maxHealth;
                 }
 
             };
         }
 
-        public booster(Workspace workspace, string name , Vector2 startPos )
+        public booster( string name , Vector2 startPos )
         {
             rotate = 0;
             NewType();
             texture = GetTextureFromType();
-            this.workspace = workspace;
             this.name = name;
-            body = this.workspace.childrens.addPart( this.name, texture);
+            body = GlobalParams.Workspace.childrens.addPart( this.name, texture);
             body.position = startPos; 
             body.SpriteSize = new Vector2(50f, 50f);
             Colision();
@@ -95,8 +95,8 @@ namespace Galaxy.workspace.Objects
             rotate++;
             body.rotation = rotate;
         }
-        public  void LoadContent(ContentManager content, GraphicsDevice device) { }
-        public  void Draw(SpriteBatch target) { }
+        public  void LoadContent() { }
+        public  void Draw() { }
 
     }
 }

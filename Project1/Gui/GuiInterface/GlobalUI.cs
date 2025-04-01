@@ -7,6 +7,7 @@ using System.Threading;
 using Galaxy.Events;
 using Galaxy.Gui.Frames;
 using Galaxy.modules;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,63 +17,61 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Galaxy.Gui.GuiInterface
 {
-    public class GlobalUI :  global::Galaxy.modules.IGlobal
+    public abstract class GlobalUI : global::Galaxy.modules.IGlobal
     {
-        public string name;
-
+        //Config
         private int _zIndex;
-        private int _transparency;
-        private bool _overflow;
-        public bool overflow
-        {
-            get { return _overflow; }
-            set { rasterizerState = new RasterizerState { ScissorTestEnable = value }; _overflow = value; }
-        }
-        public Vector2 bgSize { get; set; }
+        private bool hoverIsLeave;
+        private bool isHover;
+        public string name;
+        public bool isLoaded;
+        public bool overflow { get { return background.overflow; } set { background.overflow = value; } }
+        //Children
         public Container childrens { get; set; }
-        Vector2 basePosition;
-        public Vector2 position { get { return basePosition + (parent != null ? parent.position : new Vector2(0,0)) ; } set { basePosition = value; } }
-        public int transparency
+        //Position/color/size
+        public Vector2 position
         {
-            get { return _transparency; }
+            get { if (background == null) return Vector2.Zero; return background.position; }
             set
             {
-                _transparency = value;
-                if (_transparency < 0)
-                    _transparency = 0;
-                if (_transparency > 255)
-                    _transparency = 255;
-
-                this.bgColor = new Color(bgColor.R, bgColor.G, bgColor.B, _transparency);
+                if (background == null) return;
+                UpdateChildPos();
+                background.position = (value + (parent != null ? parent.position : new Vector2(0, 0)));
+                border.position = background.position - new Vector2(borderSize.left, borderSize.top);
             }
         }
+        public Vector2 bgSize { get { if (background == null) return Vector2.Zero; return background.size; } set { if (background == null) return; background.size = value; UpdateBorder(); } }
+        public Color bgColor { get { return background.color; } set { if (background == null) return; background.color = value;  background?.SetNewTextureColor(value); } }
+        public Color borderColor { get { return border.color; } set { if (border == null) return; border.color = value; border?.SetNewTextureColor(value); } }
 
-        public Color bgColor;
-        public Rectangle bg;
-
-        public int border;
-        public Color borderColor;
-        public bool isLoaded;
-        public ScreenGui screenGui;
+        //Parent
         public GlobalUI parent;
+        // Index    
         public int zIndex
         {
             get { return _zIndex; }
             set
             {
-              _zIndex = value;
-               ZIndexFunc();
-
+                _zIndex = value;
+                if (parent != null)
+                    parent.UpdateChildrenIndex();
             }
-        }       //events
+        }
+        //events
         public Events.BoundaryColl boundaryColl;
         public Events.HoverEvent hover;
         public Vector2 boundaryCollEventLunched;
-        protected Texture2D texture;
-        private bool hoverIsLeave;
-        private bool isHover;
-        protected RasterizerState rasterizerState;
-
+        //Textures
+        //BACKGROUND VARIABLES
+        public RoundedRectangle background;
+        //border
+        public BorderSize borderSize;
+        public RoundedRectangle border;
+        private void UpdateBorder()
+        {
+            border.position = background.position - new Vector2(borderSize.left, borderSize.top);
+            border.size = background.size + new Vector2(borderSize.left + borderSize.right, borderSize.top + borderSize.bottom);
+        }
         //setters 
         public void Move(float x, float y)
         {
@@ -86,12 +85,9 @@ namespace Galaxy.Gui.GuiInterface
             }
             float Xpos = position.X + x;
             float Ypos = position.Y + y;
-            //   Console.WriteLine(x);
-
-            //   Console.Write(x+ " " + Xpos + " " + bgSize.X + " " + screenGui.screenWidth +"\n" );
-            if (Xpos + bgSize.X >= screenGui.screenWidth)
+            if (Xpos + bgSize.X >= GlobalParams.WINDOW_WIDHT)
             {
-                Xpos = (float)screenGui.screenWidth - bgSize.X;
+                Xpos = (float)GlobalParams.WINDOW_WIDHT - bgSize.X;
                 lunchAction(new Vector2(Xpos, position.Y));
             }
             else if (Xpos <= 0)
@@ -99,9 +95,9 @@ namespace Galaxy.Gui.GuiInterface
                 Xpos = 0f;
                 lunchAction(new Vector2(Xpos, position.Y));
             }
-            if (Ypos + bgSize.Y > screenGui.screenHeight)
+            if (Ypos + bgSize.Y > GlobalParams.WINDOW_HEIGTH)
             {
-                Ypos = (float)screenGui.screenHeight - bgSize.Y;
+                Ypos = (float)GlobalParams.WINDOW_HEIGTH - bgSize.Y;
                 lunchAction(new Vector2(position.Y, Ypos));
             }
             else if (Ypos < 0)
@@ -109,25 +105,16 @@ namespace Galaxy.Gui.GuiInterface
                 Ypos = 0f;
                 lunchAction(new Vector2(position.Y, Ypos));
             }
-            //   Console.WriteLine(Xpos);
-            ///    Console.WriteLine(Ypos);
             position = new Vector2(Xpos, Ypos);
-        }
-        private void ZIndexFunc()
-        {
-            if (parent != null && parent.childrens.container.Count >= 2)
-            {
-                List<GlobalUI> tempContainer = parent.childrens.container.OrderBy(i => i.zIndex).ToList();
-                parent.childrens.container = tempContainer;
-
-            }
         }
         //Update
         public virtual void Update()
         {
-            if (texture != null && bg != Rectangle.Empty)
+            background?.Update();
+            border?.Update();
+            if (background != null && border != null && border.texture != null && background.texture != null && hover != null)
             {
-                if (bg.Contains(Mouse.GetState().Position.ToVector2()))
+                if (background.Contains(Mouse.GetState().Position.ToVector2()))
                 {
                     isHover = true;
                     hoverIsLeave = false;
@@ -140,76 +127,106 @@ namespace Galaxy.Gui.GuiInterface
                     isHover = false;
                     hover.EventHoverLeaveAction();
                 }
-                float Diff = new Vector2(screenGui.screenWidth, screenGui.screenHeight).Length() - position.Length();
+                float Diff = new Vector2(GlobalParams.WINDOW_WIDHT, GlobalParams.WINDOW_HEIGTH).Length() - position.Length();
                 if (Diff <= 1)
                     boundaryCollEventLunched = new Vector2(0, 0);
-                this.bg.Size = new Point((int)this.bgSize.X, (int)this.bgSize.Y);
-                this.bg.Location = position.ToPoint();
                 childrens.Update();
             }
-
         }
-        public virtual void LoadContent(ContentManager content, GraphicsDevice device)
+        public void UpdateChildrenIndex()
         {
-            childrens.LoadContent(content, device);
+            if (childrens.container.Count >= 2)
+                childrens.container = childrens.container.OrderBy(i => i.zIndex).ToList();
         }
+        //load content
+        public virtual void LoadContent()
+        {
+            childrens.LoadContent();
+        }
+        //draw
+        public virtual void Draw()
+        {
+            border?.Draw();
+            background?.Draw();
+        }
+        public virtual void DrawChildren()
+        {
+            GlobalParams.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, background.rasterizerState);
+            //GlobalParams.spriteBatch.GraphicsDevice.ScissorRectangle = background.scissorRectangle;
+            childrens.Draw();
+            GlobalParams.spriteBatch.End();
 
+            for (int i = 0; i < childrens.container.Count; i++)
+                childrens.container[i].DrawChildren();
+        }
+        //init
+        private void InitializeBackground()
+        {
+            background = new RoundedRectangle(Vector2.Zero, Vector2.One * 50);
+            background.Initialize();
+            background.LoadContent();
+
+            background.texture = new Texture2D(GlobalParams.Device, 1, 1);
+            background.texture.SetData(new Color[] { bgColor });
+            //background.SetNewTextureColor(background.texture);
+        }
+        private void InitializeBorder()
+        {
+            border = new RoundedRectangle(Vector2.Zero, Vector2.One * 50);
+            border.Initialize();
+            border.LoadContent();
+
+            border.texture = new Texture2D(GlobalParams.Device, 1, 1);
+            border.texture.SetData(new Color[] { Color.Blue });
+            //border.SetNewTexture(border.texture);
+            border.overflow = false;
+            borderSize.changed += (sender, e) => UpdateBorder();
+
+        }
         public virtual void Initialize()
         {
             childrens.Initialize();
-
         }
-        //draw
-        public virtual void Draw(SpriteBatch target) { }
-        private bool isRender = false;
-        public virtual void DrawChildren(SpriteBatch target)
-        {
-            
-            target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
-            target.GraphicsDevice.ScissorRectangle = bg;
-            childrens.Draw(target);
-            target.End();
-
-            for (int i = 0; i < childrens.container.Count; i++)
-                childrens.container[i].DrawChildren(target);
-        }
-
-        // setter
-
-
         protected void BgInit(GlobalUI parent)
         {
-            overflow = false;
             this.parent = parent;
             isHover = false;
             boundaryCollEventLunched = new Vector2(0, 0);
             boundaryColl = new BoundaryColl();
             hover = new HoverEvent();
+            InitializeBackground();
+            InitializeBorder();
             bgSize = new Vector2(50f, 50f);
-            position =new Vector2(50f, 50f);
-            transparency = 0;
+            position = new Vector2(50f, 50f);
             bgColor = Color.White;
-            border = 0;
-            borderColor = Color.Black;
-            bg = new Rectangle((int)position.X, (int)position.Y, (int)bgSize.X, (int)bgSize.Y);
-            childrens = new Container(screenGui, this);
-            this.rasterizerState = new RasterizerState { ScissorTestEnable = overflow };
-              zIndex = 1;
-            //_zIndex = 1;
+            childrens = new Container(this);
+            zIndex = 1;
         }
-
-
-        public void Bdestroy()
+        private void UpdateChildPos()
         {
-            boundaryColl = null;
-            screenGui = null;
-            hover = null;
-            texture = null;
-            parent = null;
+            if (childrens == null || childrens.container == null) return;
+            int n = childrens.container.Count;
+            if (n == 0)
+                return;
+            for (int i = 0; i < n - 1; i++)
+                childrens.container[i].position += Vector2.Zero;            
+            n = 0;
         }
-
+        //destroy
+        public virtual void Destroy()
+        {
+            background.Destroy();
+            border.Destroy();
+            boundaryColl = null;
+            hover = null;
+            background.texture = null;
+            parent = null;
+            for (int i = 0; i < childrens.container.Count; i++)
+            {
+                childrens.container[i].Destroy();
+            }
+        }
     }
-
     public enum VerticalTextAligne
     {
         top,
@@ -222,8 +239,6 @@ namespace Galaxy.Gui.GuiInterface
         harizontalCenter,
         right
     }
-
-
     public interface IGlobalParentUI
     {
         public Vector2 bgSize { get; set; }

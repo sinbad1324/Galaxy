@@ -14,8 +14,8 @@ namespace Galaxy.modules
     public interface IGlobal
         {
         public void Initialize(){}
-        public void LoadContent(ContentManager content, GraphicsDevice device);
+        public void LoadContent();
         public void Update();
-        public void Draw(SpriteBatch target);
+        public void Draw();
     }
 }

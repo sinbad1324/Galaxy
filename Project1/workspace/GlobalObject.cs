@@ -7,6 +7,7 @@ using Galaxy.Events;
 using Galaxy.Gui.GuiInterface;
 using Galaxy.modules;
 using Galaxy.workspace.Objects;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,10 +19,9 @@ namespace Galaxy.workspace
     public class CollisionGroupe
     {
         private List<GlobalObject> objs;
-        private List<List<GlobalObject>> globalLists;
-
-
-        public CollisionGroupe(List<GlobalObject> objs, List<List<GlobalObject>> globalLists)
+        private Dictionary<string, List<GlobalObject>> globalLists;
+        public string name;
+        public CollisionGroupe(List<GlobalObject> objs, Dictionary<string,List<GlobalObject>> globalLists ,string name )
         {
             this.objs = objs;
             this.globalLists = globalLists;
@@ -30,7 +30,7 @@ namespace Galaxy.workspace
         public void DestroyGroupe()
         {
 
-            globalLists.Remove(objs);
+            globalLists.Remove(name);
 
         }
     }
@@ -54,7 +54,7 @@ namespace Galaxy.workspace
         public bool overflow
         {
             get { return _overflow; }
-            set { new RasterizerState { ScissorTestEnable = value }; _overflow = value; }
+            set { new RasterizerState { ScissorTestEnable = value , FillMode=GlobalParams.globalFillMode }; _overflow = value; }
         }
         public float rotation
         {
@@ -68,6 +68,7 @@ namespace Galaxy.workspace
             get { return positionP; }
             set { positionP = (parent.position + value); }
         }
+        public Humanoid humanoid;
         public int transparency
         {
             get { return _transparency; }
@@ -102,16 +103,14 @@ namespace Galaxy.workspace
         public int border;
         public Color borderColor;
         public bool isLoaded;
-        public Workspace workspace;
         public IGlobalParentObj parent;
         public Texture2D texture;
-        public Humanoid humanoid;
 
         //events
         public Events.BoundaryColl boundaryColl;
         public Vector2 boundaryCollEventLunched;
         public Cloision colision;
-        public List<List<GlobalObject>> ColisionLists;
+        public Dictionary<string, List<GlobalObject>> ColisionLists;
 
         //setters 
         public void Move(float x, float y, float marge = 2)
@@ -120,7 +119,7 @@ namespace Galaxy.workspace
             {
                 if (pos != boundaryCollEventLunched)
                 {
-                    boundaryColl.EventAction();
+                    boundaryColl?.EventAction();
                     boundaryCollEventLunched = pos;
                 }
             }
@@ -130,9 +129,9 @@ namespace Galaxy.workspace
             float right = Xpos + Sprite.Size.X;
             float bottom = Ypos;
 
-            if (right + marge >= workspace.screenWidth)
+            if (right + marge >= GlobalParams.WINDOW_WIDHT)
             {
-                Xpos = workspace.screenWidth - Sprite.Size.X;
+                Xpos = GlobalParams.WINDOW_WIDHT - Sprite.Size.X;
                 LaunchAction(new Vector2(Xpos, position.Y));
             }
             else if (Xpos - marge <= 0)
@@ -140,9 +139,9 @@ namespace Galaxy.workspace
                 Xpos = marge;
                 LaunchAction(new Vector2(Xpos, position.Y));
             }
-            if (bottom + marge >= workspace.screenHeight)
+            if (bottom + marge >= GlobalParams.WINDOW_HEIGTH)
             {
-                Ypos = workspace.screenHeight;
+                Ypos = GlobalParams.WINDOW_HEIGTH;
                 LaunchAction(new Vector2(position.X, Ypos));
             }
             else if ((Ypos - Sprite.Size.Y) - marge <= 0)
@@ -154,16 +153,15 @@ namespace Galaxy.workspace
         }
 
         //Update
-
         private void updateCollision()
         {
-            if (canCollide)
+            if (canCollide && colision!=null)
             {
-                foreach (var Lists in ColisionLists)
+                foreach (KeyValuePair<string , List<GlobalObject>> nameLists in ColisionLists)
                 {
-                    foreach (var obj2 in Lists)
+                    foreach (var obj2 in nameLists.Value)
                     {
-                        if (texture == null)
+                        if (texture == null ||colision == null)
                             return;
 
                         if (Sprite.Intersects(obj2.Sprite) && obj2.id != id && obj2.canCollide == true)
@@ -171,16 +169,14 @@ namespace Galaxy.workspace
                             touchedCounter++;
                             if (touched == false)
                             {
-                                colision.TouchedAction(obj2);
+                                colision.TouchedAction(obj2, nameLists.Key);
                                 touched = true;
                             }
-                            colision.TouchingAction(obj2);
+                            colision?.TouchingAction(obj2, nameLists.Key);
                         }
                     }
-
                     if (touchedCounter <= 0)
                         touched = false;
-
                     touchedCounter = 0;
                 }
             }
@@ -189,46 +185,43 @@ namespace Galaxy.workspace
         public virtual void Update()
         {
             updateCollision();
-            float Diff = new Vector2(workspace.screenWidth, workspace.screenHeight).Length() - position.Length();
+            float Diff = new Vector2(GlobalParams.WINDOW_WIDHT, GlobalParams.WINDOW_HEIGTH).Length() - position.Length();
 
             if (Diff <= 1)
                 boundaryCollEventLunched = new Vector2(0, 0);
-
-
             this.Sprite.Size = new Point((int)this.SpriteSize.X, (int)this.SpriteSize.Y);
             this.Sprite.Location = new Point((int)this.position.X, (int)this.position.Y);
         }
-        public virtual void Draw(SpriteBatch target) { }
-        public virtual void LoadContent(ContentManager content, GraphicsDevice device) { }
+        public virtual void Draw() { }
+        public virtual void LoadContent() { }
 
         //draw
-        public void DrawChildren(SpriteBatch target)
+        public void DrawChildren()
         {
             if (childrens == null ||childrens.container.Count <= 0) return;
-            target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
-            target.GraphicsDevice.ScissorRectangle = Sprite;
-            childrens.Draw(target);
-            target.End();
+            GlobalParams.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
+            GlobalParams.spriteBatch.GraphicsDevice.ScissorRectangle = Sprite;
+            childrens.Draw();
+            GlobalParams.spriteBatch.End();
 
             for (int i = 0; i < childrens.container.Count; i++)
-                childrens.container[i].DrawChildren(target);
+                childrens.container[i].DrawChildren();
         }
         // setter
 
-        public CollisionGroupe CreateColisionGroupe(List<GlobalObject> objs)
+        public CollisionGroupe CreateColisionGroupe(List<GlobalObject> objs , string collisionName)
         {
-
-            ColisionLists.Add(objs);
-            return new CollisionGroupe(objs, ColisionLists);
+            ColisionLists[collisionName] =objs;
+            return new CollisionGroupe(objs, ColisionLists , collisionName);
         }
 
         protected void SpriteInit(IGlobalParentObj parent)
         {
-            childrens = new ObjectContainer(workspace, this);
+            childrens = new ObjectContainer(this);
             rasterizerState = new RasterizerState { ScissorTestEnable = true };
-            ColisionLists = new List<List<GlobalObject>>();
+            ColisionLists = new Dictionary<string, List<GlobalObject>>();
             Random rnd = new Random();
-            id = workspace.childrens.container.Count + 1;
+            id = GlobalParams.Workspace.childrens.container.Count + 1;
             colision = new Cloision();
             touched = false;
             touchedCounter = 0;
@@ -238,8 +231,8 @@ namespace Galaxy.workspace
             boundaryColl = new BoundaryColl();
             SpriteSize = new Vector2(50f, 50f);
             position = new Vector2(
-                (float)rnd.Next((int)SpriteSize.X, workspace.screenWidth),
-                (float)rnd.Next((int)SpriteSize.Y, workspace.screenHeight)
+                (float)rnd.Next((int)SpriteSize.X, GlobalParams.WINDOW_WIDHT),
+                (float)rnd.Next((int)SpriteSize.Y, GlobalParams.WINDOW_HEIGTH)
             );
             SpriteColor = Color.White;
             transparency = 0;
@@ -253,12 +246,13 @@ namespace Galaxy.workspace
         {
             try
             {
-                this.workspace.childrens.container.Remove(this);
-
+                GlobalParams.Workspace.childrens.container.Remove(this);
+                boundaryColl = null;
+                colision = null;
+                ColisionLists?.Clear();
+                texture = null;
             }
             catch { }
-            //      boundaryColl = null;
-            texture = null;
             // parent = null;
 
         }

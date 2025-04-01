@@ -1,6 +1,7 @@
 ﻿using Galaxy.Gui.GuiInterface;
 using Galaxy.Gui.Texts;
 using Galaxy.modules;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,19 +15,18 @@ namespace Galaxy.Gui.Images
    public class ImageLable : GlobalUI, IGlobal
     {
         public string imagePath;
-        public ImageLable(ScreenGui screenGui , GlobalUI parent , string name , string ImagePath ) {
+        public ImageLable( GlobalUI parent , string name , string ImagePath ) {
             base.name = name;
             imagePath = ImagePath;
-            base.screenGui = screenGui;
             isLoaded = false;
             base.BgInit(parent);
         }
 
-        public override void LoadContent(ContentManager content, GraphicsDevice device) {
-            base.LoadContent(content, device);
+        public override void LoadContent() {
+            base.LoadContent();
             if (!isLoaded)
             {
-                texture = content.Load<Texture2D>(imagePath);
+                background.texture = GlobalParams.Content.Load<Texture2D>(imagePath);
             //    texture.SetData<Color>(new Color[] { Color.White });
                 isLoaded = true;
             }
@@ -38,17 +38,17 @@ namespace Galaxy.Gui.Images
             base.Update();
            // Console.WriteLine(bg.Location);
         }
-        public override void Draw(SpriteBatch target) {
+        public override void Draw() {
             if (!isLoaded) Console.WriteLine("Not loaded");
-            if (texture == null) return;
-            target.Draw(texture, bg, bgColor);
+            if (background.texture == null) return;
+            base.Draw();
         }
 
         public virtual void DestroyVariables()
         {
-            base.Bdestroy();  
+            base.Destroy();  
         }
-        public virtual void Destroy()
+        public override void Destroy()
         {
             if (parent == null) return;
             int index = parent.childrens.container.FindIndex(a => a.name == this.name);

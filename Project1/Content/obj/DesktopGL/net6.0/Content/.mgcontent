@@ -4,24 +4,24 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/arial.spritefont</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Avions1.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/background.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/block.jpg</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/BulgeBall.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Enemis.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Explosion.png.webp</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/fireShooter1.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Font/CSMSG.spritefont</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/ghost.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/health.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/healthBoost.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Prendre.jpg</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/speedBoost.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/speedline.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/TDM.png</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/TDM2.jpg</File>
-    <File>C:/Users/moham/Desktop/Galaxy/Project1/Content/Textcursor.png</File>
+    <File>D:/Galaxy/Project1/Content/arial.spritefont</File>
+    <File>D:/Galaxy/Project1/Content/Avions1.png</File>
+    <File>D:/Galaxy/Project1/Content/background.png</File>
+    <File>D:/Galaxy/Project1/Content/block.jpg</File>
+    <File>D:/Galaxy/Project1/Content/BulgeBall.png</File>
+    <File>D:/Galaxy/Project1/Content/Enemis.png</File>
+    <File>D:/Galaxy/Project1/Content/Explosion.png.webp</File>
+    <File>D:/Galaxy/Project1/Content/fireShooter1.png</File>
+    <File>D:/Galaxy/Project1/Content/Font/CSMSG.spritefont</File>
+    <File>D:/Galaxy/Project1/Content/ghost.png</File>
+    <File>D:/Galaxy/Project1/Content/health.png</File>
+    <File>D:/Galaxy/Project1/Content/healthBoost.png</File>
+    <File>D:/Galaxy/Project1/Content/Prendre.jpg</File>
+    <File>D:/Galaxy/Project1/Content/speedBoost.png</File>
+    <File>D:/Galaxy/Project1/Content/speedline.png</File>
+    <File>D:/Galaxy/Project1/Content/TDM.png</File>
+    <File>D:/Galaxy/Project1/Content/TDM2.jpg</File>
+    <File>D:/Galaxy/Project1/Content/Textcursor.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

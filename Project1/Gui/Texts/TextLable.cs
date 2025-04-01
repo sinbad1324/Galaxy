@@ -1,5 +1,6 @@
 ﻿using Galaxy.Gui.GuiInterface;
 using Galaxy.modules;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,13 +25,13 @@ namespace Galaxy.Gui.Texts
         private Vector2 textPosition;
         private HorizontalTextAligne _horizontalAligne;
         private VerticalTextAligne _verticalAligne;
-
+        private float _scale=1;
         //Public
         public Vector2 getTextSize { get { return Font == null ? Vector2.Zero : Font.MeasureString(text); } }
         public string text;
         public Color color;
         public int textTransparency;
-        public float scale;
+        public float scale { get { return _scale; }  set { _scale = value; bgSize *= scale; } }
         public Vector2 textSize;
         public Vector2 getTextPosition { get { return this.textPosition; } }
 
@@ -54,9 +55,8 @@ namespace Galaxy.Gui.Texts
         }
 
         //Constructor
-        public TextLable(ScreenGui screen, GlobalUI parent, string name, string text, string fontName)
+        public TextLable(GlobalUI parent, string name, string text, string fontName)
         {
-            this.screenGui = screen;
             this.text = text;
             this.name = name;
             this.fontName = fontName;
@@ -67,7 +67,7 @@ namespace Galaxy.Gui.Texts
 
         public virtual void DestroyVariables()
         {
-            base.Bdestroy();
+            base.Destroy();
             Font = null;
             fontName = "";
             textPosition = Vector2.Zero;
@@ -117,15 +117,15 @@ namespace Galaxy.Gui.Texts
 
         //public
         //Load content
-        public override void LoadContent(ContentManager content, GraphicsDevice device)
+        public override void LoadContent()
         {
-            base.LoadContent(content, device);
+            base.LoadContent();
 
             if (isLoaded)
             {
-                this.texture = new Texture2D(device, 1, 1);
-                texture.SetData<Color>(new Color[] { bgColor });
-                this.Font = content.Load<SpriteFont>(this.fontName);
+                background.texture = new Texture2D(GlobalParams.Device, 1, 1);
+                background.texture.SetData<Color>(new Color[] { bgColor });
+                this.Font = GlobalParams.Content.Load<SpriteFont>(this.fontName);
                 isLoaded = false;
                 horizontalAligne = HorizontalTextAligne.left;
                 verticalAligne = VerticalTextAligne.top;
@@ -134,41 +134,41 @@ namespace Galaxy.Gui.Texts
         //update
         public override void Update()
         {
-            initTransparency();
-            base.Update();
-            //    <-|-[*]-|->
-            TextToBackground();
-
+            if (Font != null)
+            {
+                initTransparency();
+                base.Update();
+                TextToBackground();
+                //    <-|-[*]-|->
+            }
         }
         //render
-        private bool isRender = false;
-        public override void DrawChildren(SpriteBatch target)
-        {
-            target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, this.rasterizerState);
-            target.GraphicsDevice.ScissorRectangle = bg;
-            if (Font != null)
-                childrens.Draw(target);
-                target.DrawString(this.Font, this.text, this.textPosition, this.color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            target.End();
-
-            for (int i = 0; i < childrens.container.Count; i++)
-                childrens.container[i].DrawChildren(target);
-        }
-        public override void Draw(SpriteBatch target)
+        public override void DrawChildren()
         {
             if (Font != null)
             {
-                target.Draw(texture, this.bg, bgColor);
+            GlobalParams.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null , background.rasterizerState);
+            GlobalParams.spriteBatch.GraphicsDevice.ScissorRectangle = background.scissorRectangle;
+            if (Font != null)
+                childrens.Draw();
+                GlobalParams.spriteBatch.DrawString(this.Font, this.text, this.textPosition, this.color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                GlobalParams.spriteBatch.End();
             }
+            for (int i = 0; i < childrens.container.Count; i++)
+                childrens.container[i].DrawChildren();
         }
-
-        public virtual void Destroy()
+        public override void Draw()
+        {
+            if (Font != null)
+                base.Draw();
+        }
+        public override void Destroy()
         {
             if (parent == null) return;
             int index = parent.childrens.container.FindIndex(a => a.name == this.name);
             if (parent != null && parent.childrens.container.ElementAt(index) != null)
             {
-                Console.WriteLine(name + " destroyed");
+                Console.WriteLine("Paret");
                 parent.childrens.container.RemoveAt(index);
                 DestroyVariables();
                 GC.SuppressFinalize(this);

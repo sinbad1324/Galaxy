@@ -2,6 +2,7 @@
 using Galaxy.Gui.Frames;
 using Galaxy.modules;
 using Galaxy.VFX;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,25 +17,22 @@ namespace Galaxy.workspace.Objects
 
     public class Player : Humanoid
     {
-        public event EventHandler death;
-
+        public event EventHandler death; 
         public int damage;
         public int points;
         private List<Part> shootContainer;
         public int shootDelay;
-
-        public Player(Workspace workspace, string name)
+        public Player(string name)
         {
-            base.init(workspace, name);
+            base.init(name);
             shootContainer = new List<Part>();
             shootDelay = 400;
-            maxHealth = 1;
-            health = 1;
+            maxHealth = 1000;
+            health = maxHealth;
             speed = 10;
             MaxSpeed = 10;
             damage = 35;
         }
-
         private void LunchDeath()
         {
             if (death != null)
@@ -49,11 +47,11 @@ namespace Galaxy.workspace.Objects
                 dbc = true;
                 new Thread(() => { Thread.Sleep(shootDelay); dbc = false; }).Start();
 
-                Part newshoot = workspace.childrens.addPart(
+                Part newshoot = GlobalParams.Workspace.childrens.addPart(
                      "shot_" + name + "_" + shootContainer.Count,
                      "fireShooter1"
                  );
-                newshoot.CreateColisionGroupe(workspace.getCharacterEnemis());
+                newshoot.CreateColisionGroupe(GlobalParams.Workspace.getCharacterEnemis() , "Enemis");
                 newshoot.position = charchter.position + new Vector2(random.Next(-30, 150), -50);
                 newshoot.bgSize = new Vector2(2, 2);
                 int dm = damage;
@@ -71,6 +69,8 @@ namespace Galaxy.workspace.Objects
 
                 newshoot.colision.touched += (object obj, TouchArgs e) =>
                 {
+                    if (e.ActionName != "Enemis")
+                        return;
                     if ((e.obj.humanoid.charchter.position - chPos).Length() <= 70f)
                     {
                         dm += 20;
@@ -81,7 +81,7 @@ namespace Galaxy.workspace.Objects
                         e.obj.humanoid.Damage(dm);
                     points++;
 
-                    Flipbook animation = this.workspace.childrens.addFlipbook("Explosion", 8);
+                    Flipbook animation = GlobalParams.Workspace.childrens.addFlipbook("Explosion", 8);
                     animation.position = newshoot.position - new Vector2(20, 100);
                     animation.interval = 0;
                     animation.Play();
@@ -132,7 +132,7 @@ namespace Galaxy.workspace.Objects
             base.Initialize();
             charchter.humanoid = this;
         }
-        public override void LoadContent(ContentManager content, GraphicsDevice device) { }
+        public override void LoadContent() { }    
         public override void Damage(float value)
         {
             base.Damage(value);
@@ -141,11 +141,11 @@ namespace Galaxy.workspace.Objects
         }
         public override void Update()
         {
-            KeyPressing();
             base.Update();
+            KeyPressing();
         }
 
-        public override void Draw(SpriteBatch target) { base.Draw(target); }
+        public override void Draw() { base.Draw(); }
 
     }
 }

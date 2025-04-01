@@ -140,7 +140,7 @@ namespace Project1.InstancePlugin.UI
             flexWrap = false;
             inSetPadding = 0;
         }
-        public void LoadContent(ContentManager content, GraphicsDevice device) { }
+        public void LoadContent() { }
         private Tuple<float, float> getSizeYXMax()
         {
             float bigY = 0;
@@ -275,6 +275,6 @@ namespace Project1.InstancePlugin.UI
             }
 
         }
-        public void Draw(SpriteBatch target) { }
+        public void Draw() { }
     }
 }

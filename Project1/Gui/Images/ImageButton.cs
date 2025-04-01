@@ -1,4 +1,4 @@
-﻿using Galaxy.Events;
+﻿    using Galaxy.Events;
 using Galaxy.Gui.GuiInterface;
 using Galaxy.Gui.Texts;
 using Galaxy.modules;
@@ -17,9 +17,10 @@ namespace Galaxy.Gui.Images
         private bool isHover;
         public mouseButton1Event Button1Click;
 
-        public ImageButton(ScreenGui screenGui, GlobalUI parent, string name, string ImagePath): base(screenGui, parent, name, ImagePath) 
+        public ImageButton(GlobalUI parent, string name, string ImagePath): base( parent, name, ImagePath) 
         {
             initVariables();
+            
         }
         private void initVariables()
         {
@@ -82,7 +83,7 @@ namespace Galaxy.Gui.Images
                 pressed = true;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.PressedAction();
                     }
@@ -94,7 +95,7 @@ namespace Galaxy.Gui.Images
                 pressed = false;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.UnPressedAction();
                     }

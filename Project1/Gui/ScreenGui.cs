@@ -2,7 +2,7 @@
 using Galaxy.Gui.GuiInterface;
 using Galaxy.Gui.Images;
 using Galaxy.Gui.Texts;
-using Galaxy.workspace.Objects;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,58 +22,49 @@ namespace Galaxy.Gui
     public class ScreenGui : GlobalUI
     {
         static Random random = new Random();
-        public int screenWidth {  get; }
-        public int screenHeight {get; }
-        public GameWindow window;
-        public GalaxyMotor motor;
 
-        public ScreenGui(GalaxyMotor motor, int _screenWidth, int _screenHeight , GameWindow window)
+
+        public ScreenGui()
         {
-            childrens = new Container(this ,this);
-            this.screenWidth = _screenWidth;
-            this.screenHeight = _screenHeight;
-            this.window = window;
-            screenGui = this;
-            bgSize = new Vector2(screenWidth, screenHeight);
+            childrens = new Container(this);
+            //BgInit(this);
+            bgSize = new Vector2(GlobalParams.WINDOW_WIDHT, GlobalParams.WINDOW_HEIGTH);
             position = new Vector2(0f, 0f);
-            this.motor = motor;
         }
-
-    
-        //Accessors
-      
-     
         //Initialze
        public override void Initialize()
         {
             base.Initialize();
-            TextLable Points= childrens.addTextLable( "Points" , "Points");
-            Points.bgColor = Color.Black;
+            TextLable Points = childrens.addTextLable("Points", "Points");
+            Points.bgColor = Color.Transparent;
             Points.color = Color.White;
-     
+
+            //Frame fback = childrens.addFrame("background" , position,new Vector2(GlobalParams.WINDOW_WIDHT , GlobalParams.WINDOW_HEIGTH) , Color.Transparent);
+            //fback.zIndex = 0;
         }
         //Load content
         //Setters
 
-        public override void LoadContent(ContentManager content, GraphicsDevice device)
+        public override void LoadContent()
         {
-            this.childrens.LoadContent(content, device);
+            this.childrens.LoadContent();
+            base.LoadContent();
         }
         //update
         public override void Update()
         {
-
             this.childrens.Update();
+            base.Update();
         }
         //render
-        public override void Draw(SpriteBatch target) {
-
-            target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
-            childrens.Draw(target);
-            target.End();
+        public override void Draw( ) {
+            base.Draw( );
+            //GlobalParams.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
+            childrens.Draw();
+            //GlobalParams.spriteBatch.End();
 
             for (int i = 0; i < childrens.container.Count; i++)
-                childrens.container[i].DrawChildren(target);
+                childrens.container[i].DrawChildren();
             
         }
     }

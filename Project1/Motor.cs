@@ -24,7 +24,7 @@
 //        public Workspace workspace;
 //        public Vector2 size;
 //        public string PlayerName;
-//        public int reStarted;
+//        //public int reStarted;
 
 //        private bool _pausedWorkspace;
 //        public bool IsPlaying
@@ -49,8 +49,8 @@
 //            _graphics.PreferredBackBufferWidth = 1500;
 //            _graphics.PreferredBackBufferHeight = 1000;
 //            _graphics.ApplyChanges();
-//            screenGui = new ScreenGui(this,_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, Window);
-//            workspace = new Workspace(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
+//            screenGui = new ScreenGui(this, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, Window);
+//            //workspace = new Workspace(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
 //            _started = false;
 //            reStarted = 0;
 //            raid = 0;
@@ -76,69 +76,69 @@
 
 //        }
 
-//        private void GameVerify()
-//        {
+//        //private void GameVerify()
+//        //{
 
-//            if (!IsPlaying)
-//            {
-//                if (reStarted <= 0)
-//                {
-//                    StopWorkspace();
-//                    return;
-//                }
-//                TextButton btn = StarterUI.RestartBtnComp(screenGui);
-//                int totalTime = 1;
-//                new Thread(() =>
-//                {
-//                    Thread.Sleep(10 * totalTime);
-//                    Frame HealthContainer = screenGui.childrens.FindChildren<Frame>("HealthContainer");
-//                    if (HealthContainer != null)
-//                    {
-//                        ImageLable lasthealth = HealthContainer.childrens.FindChildren<ImageLable>("health" + reStarted);
-//                        if (lasthealth != null) lasthealth.Destroy();
-//                    }
-//                    btn.Button1Click.Pressed += (object obj, EventArgs e) =>
-//                    {
-//                        workspace.player.health = workspace.player.maxHealth;
-//                        workspace.maxEnemies = 5;
-//                        btn.Destroy();
-//                        btn = null;
-//                        ImageLable img = screenGui.childrens.FindChildren<ImageLable>("Tete de mort");
-//                        if (img != null)
-//                            img.Destroy();
+//        //    if (!IsPlaying)
+//        //    {
+//        //        if (reStarted <= 0)
+//        //        {
+//        //            StopWorkspace();
+//        //            return;
+//        //        }
+//        //        TextButton btn = StarterUI.RestartBtnComp(screenGui);
+//        //        int totalTime = 1;
+//        //        new Thread(() =>
+//        //        {
+//        //            Thread.Sleep(10 * totalTime);
+//        //            Frame HealthContainer = screenGui.childrens.FindChildren<Frame>("HealthContainer");
+//        //            if (HealthContainer != null)
+//        //            {
+//        //                ImageLable lasthealth = HealthContainer.childrens.FindChildren<ImageLable>("health" + reStarted);
+//        //                if (lasthealth != null) lasthealth.Destroy();
+//        //            }
+//        //            btn.Button1Click.Pressed += (object obj, EventArgs e) =>
+//        //            {
+//        //                workspace.player.health = workspace.player.maxHealth;
+//        //                workspace.maxEnemies = 5;
+//        //                btn.Destroy();
+//        //                btn = null;
+//        //                ImageLable img = screenGui.childrens.FindChildren<ImageLable>("Tete de mort");
+//        //                if (img != null)
+//        //                    img.Destroy();
 
-//                        for (int i = 0; i < workspace.EnemisGroup.Count; i++)
-//                        {
-//                            workspace.EnemisGroup[i].health = workspace.EnemisGroup[i].maxHealth;
-//                        }
-//                    };
-//                }).Start();
-//            }
-//            workspace.player.death += (object obj, EventArgs e) =>
-//            {
-//                reStarted = -1;
-//                if (reStarted <= 0)
-//                {
-//                    StopWorkspace();
-//                    return;
-//                }
-//                ImageLable img = screenGui.childrens.addImageLable("Tete de mort", "TDM2");
-//                img.bgSize = new Vector2(300, 300);
-//                img.position = new Vector2(workspace.screenWidth / 2 - 150, -100);
-//                int totalTime = 100;
-//                new Thread(() =>
-//                {
-//                    for (int i = 0; i < totalTime; i++)
-//                    {
-//                        Thread.Sleep(10);
-//                        img.position = Utils.GetDirectionSpeed(img.position, new Vector2(workspace.screenWidth / 2 - 150, workspace.screenHeight / 2 - 150), (float)totalTime, (float)i);
-//                    }
-//                }).Start();
-//                _IsPlaying = false;
-//            };
-//        }
+//        //                for (int i = 0; i < workspace.EnemisGroup.Count; i++)
+//        //                {
+//        //                    workspace.EnemisGroup[i].health = workspace.EnemisGroup[i].maxHealth;
+//        //                }
+//        //            };
+//        //        }).Start();
+//        //    }
+//        //    workspace.player.death += (object obj, EventArgs e) =>
+//        //    {
+//        //        reStarted = -1;
+//        //        if (reStarted <= 0)
+//        //        {
+//        //            StopWorkspace();
+//        //            return;
+//        //        }
+//        //        ImageLable img = screenGui.childrens.addImageLable("Tete de mort", "TDM2");
+//        //        img.bgSize = new Vector2(300, 300);
+//        //        img.position = new Vector2(workspace.screenWidth / 2 - 150, -100);
+//        //        int totalTime = 100;
+//        //        new Thread(() =>
+//        //        {
+//        //            for (int i = 0; i < totalTime; i++)
+//        //            {
+//        //                Thread.Sleep(10);
+//        //                img.position = Utils.GetDirectionSpeed(img.position, new Vector2(workspace.screenWidth / 2 - 150, workspace.screenHeight / 2 - 150), (float)totalTime, (float)i);
+//        //            }
+//        //        }).Start();
+//        //        _IsPlaying = false;
+//        //    };
+//        //}
 
-//        //Methodes IGlobal 
+//        ////Methodes IGlobal 
 
 
 //        protected override void Initialize()
@@ -147,7 +147,7 @@
 //            base.Initialize();
 //            screenGui.Initialize();
 //            workspace.Initialize();
-//            GameVerify();
+//            //GameVerify();
 //            float scale = 1.2f;
 //            TextButton startbtn = StarterUI.StartBtn(screenGui);
 //            StarterUI.StartBtn(screenGui).Button1Click.UnPressed += (object obj, EventArgs e) =>
@@ -166,7 +166,7 @@
 
 //                //}
 //            };
-//           }
+//        }
 
 //        protected override void LoadContent()
 //        {
@@ -215,7 +215,7 @@
 //            // plan 2
 //            if (_IsPlaying && _started)
 //                workspace.Draw(_spriteBatch);
-            
+
 //            // plan 1 
 //            screenGui.Draw(_spriteBatch);
 

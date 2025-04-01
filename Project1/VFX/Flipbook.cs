@@ -3,6 +3,7 @@ using Galaxy.Gui.Frames;
 using Galaxy.Gui.GuiInterface;
 using Galaxy.modules;
 using Galaxy.workspace;
+using LearnMatrix;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +27,6 @@ namespace Galaxy.VFX
         private int rowPos;
         private int colPos;
         private bool isPaused;
-        //public float rotation;
         public int interval;
         public FlipbookFinished Finish;
     
@@ -43,11 +43,11 @@ namespace Galaxy.VFX
                 rowPos++;
             }
         }
-        public Flipbook(Workspace workspace, int columns, string path, string name, int id, IGlobalParentObj parent)
+        public Flipbook( int columns, string path, string name, int id, IGlobalParentObj parent)
         {
             rotation = 0;
-            this.workspace = workspace;
             this.parent = parent;
+            this.name = name;
             Finish = new FlipbookFinished();
             isPaused = false;
             numFrames = columns * columns;
@@ -59,13 +59,10 @@ namespace Galaxy.VFX
             position = Vector2.Zero;
             canCollide = false;
             SpriteSize = new Vector2(imageSize.X/columns , imageSize.Y / columns);
-
-
-
         }
-        public override void LoadContent(ContentManager content, GraphicsDevice device)
+        public override void LoadContent()
         {
-            texture = content.Load<Texture2D>(path );
+            texture = GlobalParams.Content.Load<Texture2D>(path );
             this.imageSize = new Vector2(texture.Width, texture.Height);
         }
         public override void Update()
@@ -115,10 +112,10 @@ namespace Galaxy.VFX
                 y
                 );
         }
-        public override void Draw(SpriteBatch target)
+        public override void Draw()
         {
             if (isPaused) return; 
-            target.Draw(texture, position, Rectangle(), Color.White, rotation, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
+            GlobalParams.spriteBatch.Draw(texture, position, Rectangle(), Color.White, rotation, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
         }
 
         public void Destroy()
@@ -129,6 +126,8 @@ namespace Galaxy.VFX
             activeFrame = 0;
             activeFrame = 0;
             base.Bdestroy();
+            this.name = "";
+            GlobalParams.Workspace.childrens.container.Remove(this);
             GC.SuppressFinalize(this);
         }
     }

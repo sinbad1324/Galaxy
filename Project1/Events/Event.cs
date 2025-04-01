@@ -140,8 +140,10 @@ namespace Galaxy.Events
     public class TouchArgs : EventArgs 
     {
         public GlobalObject obj { get;  }
-        public TouchArgs(GlobalObject obj)
+        public string ActionName { get; }
+        public TouchArgs(GlobalObject obj, string ActionName)
         {
+            this.ActionName = ActionName;
             this.obj = obj;
         }
     }
@@ -150,33 +152,33 @@ namespace Galaxy.Events
         public event EventHandler<TouchArgs> touched;
         public event EventHandler<TouchArgs> touching;
 
-        public void  TouchedLuncher(GlobalObject obj)
+        public void  TouchedLuncher(GlobalObject obj, string ActionName)
         {
-            TouchArgs arg = new TouchArgs(obj);
+            TouchArgs arg = new TouchArgs(obj ,  ActionName);
             if (touched != null)
             {
                 touched(this, arg);
             }
         }
 
-        public void TouchedAction(GlobalObject obj)
+        public void TouchedAction(GlobalObject obj , string ActionName)
         {
-            TouchedLuncher(obj);
+            TouchedLuncher(obj, ActionName);
         }
 
 
-        public void TouchingLuncher(GlobalObject obj)
+        public void TouchingLuncher(GlobalObject obj , string ActionName)
         {
-            TouchArgs arg = new TouchArgs(obj);
+            TouchArgs arg = new TouchArgs(obj, ActionName);
             if (touching != null)
             {
                 touching(this, arg);
             }
         }
 
-        public void TouchingAction(GlobalObject obj)
+        public void TouchingAction(GlobalObject obj, string ActionName)
         {
-            TouchingLuncher(obj);
+            TouchingLuncher(obj, ActionName);
         }
 
 

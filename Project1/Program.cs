@@ -1,3 +1,6 @@
 ﻿
-using var game = new Galaxy.GalaxyMotor();
+using Galaxy;
+
+using var game = new GalaxyMotor();
 game.Run();
+

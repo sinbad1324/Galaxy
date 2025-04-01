@@ -15,7 +15,7 @@ namespace Galaxy.Gui.Texts
         private bool isHover;
         public mouseButton1Event Button1Click;
 
-        public TextButton(ScreenGui screen, GlobalUI parent, string name, string text, string fontName) : base(screen, parent, name, text, fontName)
+        public TextButton( GlobalUI parent, string name, string text, string fontName) : base( parent, name, text, fontName)
         {
             initVariables();
             initEvent();
@@ -55,7 +55,7 @@ namespace Galaxy.Gui.Texts
                 pressed = true;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.PressedAction();
                     }
@@ -67,7 +67,7 @@ namespace Galaxy.Gui.Texts
                 pressed = false;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.UnPressedAction();
                     }
@@ -99,7 +99,6 @@ namespace Galaxy.Gui.Texts
             int index = parent.childrens.container.FindIndex(a => a.name == this.name);
             if (parent != null && parent.childrens.container.ElementAt(index) != null)
             {
-                Console.WriteLine(name + " destroyed");
                 parent.childrens.container.RemoveAt(index);
                 DestroyVariables();
                 GC.SuppressFinalize(this);

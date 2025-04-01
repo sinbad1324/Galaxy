@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Input;
 using System.Buffers.Text;
+using LearnMatrix;
 
 
 namespace Galaxy.Gui.Frames
@@ -73,7 +74,7 @@ namespace Galaxy.Gui.Frames
             set
             {
                 _canvasSize = new Vector2(Math.Max(value.X, baseUi.Size.X), Math.Max(value.Y, baseUi.Size.Y));
-                bg.Size = _canvasSize.ToPoint();
+                background.size = _canvasSize;
             }
         }
         //Private
@@ -81,20 +82,17 @@ namespace Galaxy.Gui.Frames
         private int oldWheelValue;
         private int scrollSpeed;
         private ScrollingFrameDirection _Axe;
-        private int ancienPos = 0;
         private Vector2 AxeSize;
         private Vector2 AxePosition;
-        private bool isPress;
+        //private bool isPress;
         private Texture2D textureBaseUi;
         private Texture2D textureBaseUi2;
 
-        public ScrollingFarme(ScreenGui screenGui, GlobalUI parent, string name, Vector2 position, Vector2 size, Color color)
+        public ScrollingFarme( GlobalUI parent, string name, Vector2 position, Vector2 size, Color color)
         {
-            this.screenGui = screenGui;
             BgInit(parent);
             this.name = name;
             oldWheelValue = Mouse.GetState().ScrollWheelValue;
-            bg = new Rectangle(200, 100, 100, 100);
             bgColor = color;
             scrollSpeed = 50;
             this.position = position;
@@ -109,20 +107,20 @@ namespace Galaxy.Gui.Frames
             Axe = ScrollingFrameDirection.Y;
 
             scrollFrame = new Rectangle((int)AxePosition.X, (int)AxePosition.Y, (int)AxeSize.X, (int)AxeSize.Y);
-            bg.Location = baseUi.Location;
-            bg.Size = baseUi.Size + CanvasSize.ToPoint();
-            bgSize = bg.Size.ToVector2();
-            rasterizerState = new RasterizerState { ScissorTestEnable = true };
+            background.position = baseUi.Location.ToVector2();
+            background.size = baseUi.Size.ToVector2() + CanvasSize;
+            bgSize = background.size;
+            
         }
-        public override void LoadContent(ContentManager content, GraphicsDevice device)
+        public override void LoadContent()
         {
-            base.LoadContent(content, device);
-            this.texture = new Texture2D(device, 1, 1);
-            texture.SetData<Color>(new Color[] { bgColor });
+            base.LoadContent();
+            this.background.texture = new Texture2D(GlobalParams.Device, 1, 1);
+            background.texture.SetData<Color>(new Color[] { bgColor });
 
-            this.textureBaseUi = new Texture2D(device, 1, 1);
+            this.textureBaseUi = new Texture2D(GlobalParams.Device, 1, 1);
             textureBaseUi.SetData<Color>(new Color[] { Color.Transparent });
-            this.textureBaseUi2 = new Texture2D(device, 1, 1);
+            this.textureBaseUi2 = new Texture2D(GlobalParams.Device, 1, 1);
             textureBaseUi2.SetData<Color>(new Color[] { scrollColor });
         }
 
@@ -148,20 +146,20 @@ namespace Galaxy.Gui.Frames
 
             //base.Update();
             if (Axe == ScrollingFrameDirection.X)
-                scrollSpeed = (bg.Size.X - baseUi.Size.X) <= 0 ? 0 : (bg.Size.X / baseUi.Size.X); 
+                scrollSpeed = ((int)background.size.X - baseUi.Size.X) <= 0 ? 0 : ((int)background.size.X / baseUi.Size.X); 
             
             else
-                scrollSpeed = (bg.Size.Y - baseUi.Size.Y) <= 0 ? 0 : (bg.Size.Y / baseUi.Size.Y);
+                scrollSpeed = ((int)background.size.Y - baseUi.Size.Y) <= 0 ? 0 : ((int)background.size.Y / baseUi.Size.Y);
 
             int MouseWheel = GetMouseWheel();
             scrollFrame.Location = AxePosition.ToPoint();
             scrollFrame.Size = AxeSize.ToPoint();
             if (Axe == ScrollingFrameDirection.X)
-                this.bg.Location = new Point(baseUi.Location.X + Math.Max(((int)AxePosition.X - baseUi.Location.X) - 1, 0) * scrollSpeed * -1, this.bg.Location.Y);
+                this.background.position = new Vector2(baseUi.Location.X + Math.Max(((int)AxePosition.X - baseUi.Location.X) - 1, 0) * scrollSpeed * -1, (int)this.background.position.Y);
             else
-                this.bg.Location = new Point(this.bg.Location.X, baseUi.Location.Y + Math.Max(((int)AxePosition.Y - baseUi.Location.Y) - 1, 0) * scrollSpeed * -1);
-            position = this.bg.Location.ToVector2();
-            bgSize = this.bg.Size.ToVector2();
+                this.background.position = new Vector2(this.background.position.X, baseUi.Location.Y + Math.Max(((int)AxePosition.Y - baseUi.Location.Y) - 1, 0) * scrollSpeed * -1);
+            position = this.background.position;
+            bgSize = this.background.size;
             MouseState mouseState = Mouse.GetState();
             if (baseUi.Contains((float)mouseState.Position.X, (float)mouseState.Position.Y))
                 scrollPosition += MouseWheel * (scrollSpeed +5);
@@ -171,28 +169,25 @@ namespace Galaxy.Gui.Frames
             }
             childrens.Update();
         }
-        public override void Draw(SpriteBatch target)
+        public override void Draw()
         {
-            if (texture != null && textureBaseUi != null)
-            {
-                target.Draw(texture, baseUi, bgColor);
-            }
+            if (background.texture != null && textureBaseUi != null)
+
+                GlobalParams.spriteBatch.Draw(background.texture, baseUi, bgColor);
+            
         }
 
-        public override void DrawChildren(SpriteBatch target)
+        public override void DrawChildren()
         {
-            target.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, rasterizerState);
-            target.GraphicsDevice.ScissorRectangle = baseUi;
-            target.Draw(textureBaseUi, bg, baseUi, Color.Transparent);
-            childrens.Draw(target);
-            if (bg.Size != baseUi.Size)
-                target.Draw(textureBaseUi2, scrollFrame, baseUi, scrollColor);
-                
-            
-            target.End();
-
+            GlobalParams.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, background.rasterizerState);
+            GlobalParams.Device.ScissorRectangle = baseUi;
+            GlobalParams.spriteBatch.Draw(textureBaseUi, background.scissorRectangle, baseUi, Color.Transparent);
+            childrens.Draw();
+            if (background.size != baseUi.Size.ToVector2())
+                GlobalParams.spriteBatch.Draw(textureBaseUi2, scrollFrame, baseUi, scrollColor);
+            GlobalParams.spriteBatch.End();
             for (int i = 0; i < childrens.container.Count; i++)
-                childrens.container[i].DrawChildren(target);
+                childrens.container[i].DrawChildren();
         }
 
     }

@@ -11,19 +11,18 @@ using Galaxy.Gui.GuiInterface;
 using System.Reflection.Metadata;
 using Galaxy.VFX;
 using System.IO;
+using LearnMatrix;
 
 namespace Galaxy.workspace
 {
     public class ObjectContainer : IGlobal
     {
         public List<GlobalObject> container;
-        Workspace workspace;
         IGlobalParentObj parent;
-        private GraphicsDevice device;
-        private ContentManager content;
 
-        public ObjectContainer(Workspace workspace , IGlobalParentObj parent) { 
-            this.workspace = workspace; container = new List<GlobalObject>();
+
+        public ObjectContainer( IGlobalParentObj parent) { 
+       container = new List<GlobalObject>();
             this.parent = parent;
         }
 
@@ -35,20 +34,18 @@ namespace Galaxy.workspace
 
         public Part addPart( string name = "Part", string textureName = "block")
         {
-            Part part = new Part(this.workspace, parent, name, textureName , container.Count+1);
-            if (content != null && device!=null)
-                part.LoadContent(content , device);
-            
+            Part part = new Part( parent, name, textureName , container.Count+1);
+            part.LoadContent();
             container.Add(part);
+            
             return part;
         }
 
         public Flipbook addFlipbook(string path= "8x8-Explosion", int colums = 8, string name = "Flipbook" )
         {
-            Flipbook flipbook = new Flipbook(this.workspace, colums , path, name , container.Count+1 , parent);
-            if (content != null && device != null)
-                flipbook.LoadContent(content, device);
-            
+            Flipbook flipbook = new Flipbook( colums , path, name , container.Count+1 , parent);
+                flipbook.LoadContent();
+
             container.Add(flipbook);
             return flipbook;
         }
@@ -57,7 +54,7 @@ namespace Galaxy.workspace
             T textLable = default(T);
             foreach (var item in container)
             {
-                if (item.name == name && textLable == null)
+                if (item != null &&item.name == name && textLable == null)
                 {
                     textLable = item as T;
                     if (textLable != null)
@@ -70,12 +67,10 @@ namespace Galaxy.workspace
         }
 
         //Load content
-        public void LoadContent(ContentManager content, GraphicsDevice device)
+        public void LoadContent()
         {
-            this.content = content;
-            this.device = device;
             foreach (var item in container.ToList())
-                item.LoadContent(content, device);
+                item.LoadContent();
         }
         //update
         public void Update()
@@ -85,11 +80,16 @@ namespace Galaxy.workspace
                     item.Update();
         }
         //render
-        public void Draw(SpriteBatch target)
+        public void Draw()
         {
             foreach (var item in container.ToList())
                 if (item != null)
-                    item.Draw(target);
+                    item.Draw();
+        }
+        public void Destroy()
+        {
+            container.Clear();
+            GC.SuppressFinalize(this);
         }
     }
 }

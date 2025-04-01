@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using Galaxy.Gui.GuiInterface;
 using System.Linq;
+using LearnMatrix;
 
 
 namespace Galaxy.Gui.Texts
@@ -25,7 +26,7 @@ namespace Galaxy.Gui.Texts
         public mouseButton1Event Button1Click;
         public LostFocused FocusedEvent;
         //Constructor
-        public TextBox(ScreenGui screen, GlobalUI parent, string name, string text, string fontName) : base(screen, parent, name, text, fontName)
+        public TextBox( GlobalUI parent, string name, string text, string fontName) : base( parent, name, text, fontName)
         {
             initVariables();
             initEvent();
@@ -77,7 +78,7 @@ namespace Galaxy.Gui.Texts
                 clicked = true;
                 base.text = "";
             };
-            screenGui.window.TextInput += TextInput;
+           GlobalParams.GameWindow.TextInput += TextInput;
         }
 
         private void initVariables()
@@ -100,7 +101,7 @@ namespace Galaxy.Gui.Texts
                 pressed = true;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.PressedAction();
                     }
@@ -111,7 +112,7 @@ namespace Galaxy.Gui.Texts
                 pressed = false;
                 if (mgs.Position.ToVector2().X >= 0 && mgs.Position.ToVector2().Y >= 0)
                 {
-                    if (bg.Contains(mgs.Position.ToVector2()))
+                    if (background.Contains(mgs.Position.ToVector2()))
                     {
                         Button1Click.UnPressedAction();
                     }
@@ -130,7 +131,7 @@ namespace Galaxy.Gui.Texts
                 }
             }
             if (mgs.LeftButton == ButtonState.Pressed || mgs.RightButton == ButtonState.Pressed)
-                if (!bg.Contains(mgs.Position))
+                if (!background.Contains(mgs.Position))
                     if (clicked)
                     {
                         clicked = false;
@@ -144,7 +145,7 @@ namespace Galaxy.Gui.Texts
         {
             try
             {
-                screenGui.window.TextInput -= TextInput;
+                GlobalParams.GameWindow.TextInput -= TextInput;
                 base.hover.Hover -= Hover;
                 base.hover.HoverLeave -= HoverLeave;
                 if (isHover)
@@ -161,11 +162,11 @@ namespace Galaxy.Gui.Texts
         }
         public override void Destroy()
         {
+            base.Destroy();
             if (parent == null) return;
             int index = parent.childrens.container.FindIndex(a => a.name == this.name);
             if (parent != null && parent.childrens.container.ElementAt(index) != null)
             {
-                Console.WriteLine(name + " destroyed");
                 parent.childrens.container.RemoveAt(index);
                 DestroyVariables();
                 GC.SuppressFinalize(this);

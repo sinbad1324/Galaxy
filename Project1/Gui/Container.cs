@@ -18,15 +18,12 @@ namespace Galaxy.Gui
     {
         public List<GlobalUI> container;
         public List<Flex> Flexs;
-        ScreenGui ScreenGui;
         GlobalUI parent;
-        public GraphicsDevice device;
-        private ContentManager Content;
 
-        public Container(ScreenGui ScreenGui, GlobalUI parent)
+
+        public Container( GlobalUI parent)
         {
-            this.ScreenGui = ScreenGui;
-            container = new List<GlobalUI >();
+            container = new List<GlobalUI>();
             Flexs = new List<Flex>();
             this.parent = parent;
         }
@@ -38,110 +35,108 @@ namespace Galaxy.Gui
             //    container[i].Initialize();
             //for (int i = 0; i < length; i++)
             //{
-                
+
             //}
         }
         //Setters
         //ImageButton
         public ImageButton addImageButton(string name = "ImageButton", string imagePath = "Logo")
         {
-            ImageButton btnimg = new ImageButton(ScreenGui, parent, name, imagePath);
+            ImageButton btnimg = new ImageButton( parent, name, imagePath);
             btnimg.Initialize();
-            if (Content != null && device != null)
-            {
-                btnimg.LoadContent(this.Content, device);
-            }
+
+            btnimg.LoadContent();
+
             container.Add(btnimg);
+            btnimg.zIndex = 0;
             return btnimg;
         }
 
         //ImageLable
         public ImageLable addImageLable(string name = "ImageLable", string imagePath = "Logo")
         {
-            ImageLable textLable = new ImageLable(ScreenGui, parent, name, imagePath);
+            ImageLable textLable = new ImageLable(parent, name, imagePath);
             textLable.Initialize();
             //Prob
-            if (Content != null && device != null)
-            {
-                textLable.LoadContent(this.Content, device);
-            }
+
+            textLable.LoadContent();
+
             container.Add(textLable);
+            textLable.zIndex = 0;
             return textLable;
         }
 
         //TextButton
         public TextButton addTextButton(string name = "TextButton", string text = "Text...", string font = "arial")
         {
-            TextButton btn = new TextButton(ScreenGui, parent, name, text, font);
+            TextButton btn = new TextButton( parent, name, text, font);
             btn.Initialize();
             //Prob
-            if (Content != null && device != null)
-            {
-                btn.LoadContent(this.Content, device);
-            }
+
+            btn.LoadContent();
+
             container.Add(btn);
+            btn.zIndex = 0;
             return btn;
         }
 
         //TextBox
         public TextBox addTextBox(string name = "TextBox", string text = "Text...", string font = "arial")
         {
-            TextBox textBox = new TextBox(ScreenGui, parent, name, text, font);
+            TextBox textBox = new TextBox( parent, name, text, font);
             textBox.zIndex = 1;
             textBox.Initialize();
-            if (Content != null && device != null)
-            {
-                textBox.LoadContent(this.Content, device);
-            }
+
+            textBox.LoadContent();
+
             container.Add(textBox);
+            textBox.zIndex = 0;
             return textBox;
         }
 
         //TextLable
         public TextLable addTextLable(string name = "TextLable", string text = "Text...", string font = "arial")
         {
-            TextLable textLable = new TextLable(ScreenGui, parent, name, text, font);
+            TextLable textLable = new TextLable(parent, name, text, font);
             textLable.Initialize();
-            if (Content != null && device != null)
-            {
-                textLable.LoadContent(this.Content, device);
-            }
+
+            textLable.LoadContent();
+
             container.Add(textLable);
+            textLable.zIndex = 0;
             return textLable;
         }
 
         //Frame
         public Frame addFrame(string name, Vector2 position, Vector2 size, Color color)
         {
-            Frame frame = new Frame(this.ScreenGui, parent, name, position, size, color);
-            frame.bgColor = color;
-            frame.bgSize = size;
-            frame.position = position;
-            if (Content != null && device != null)
-            {
-                frame.LoadContent(this.Content, device);
-            }
+            Frame frame = new Frame( parent, name, position, size, color);
+
             frame.Initialize();
+            frame.LoadContent();
+            Console.WriteLine();
             this.container.Add(frame);
+            frame.bgColor = color;
+            //frame.zIndex = 0;
             return frame;
         }
 
         public ScrollingFarme addScrollingFarme(string name, Vector2 position, Vector2 size, Color color)
         {
-            ScrollingFarme frame = new ScrollingFarme(this.ScreenGui, parent, name, position, size, color);
+            ScrollingFarme frame = new ScrollingFarme( parent, name, position, size, color);
             frame.Initialize();
-            if (Content != null && device != null)
-            {
-                frame.LoadContent(this.Content, device);
-            }
+
+            frame.LoadContent();
+
             this.container.Add(frame);
+            frame.zIndex = 0;
             return frame;
         }
 
-        public Flex addFlexBox(string name , FlexAlagniement flexAlagniement , float padding)
+        public Flex addFlexBox(string name, FlexAlagniement flexAlagniement, float padding)
         {
 
-            Flex flex = new Flex(parent ,name, flexAlagniement , padding);
+            Flex flex = new Flex(parent, name, flexAlagniement, padding);
             flex.Initialize();
             this.Flexs.Add(flex);
             return flex;
@@ -156,7 +151,7 @@ namespace Galaxy.Gui
                 {
                     if (item.name == name && child == null)
                     {
-                        child =  item as T;
+                        child = item as T;
                         if (child != null)
                         {
                             break;
@@ -181,14 +176,12 @@ namespace Galaxy.Gui
             return child;
         }
         //Load content
-        public void LoadContent(ContentManager content, GraphicsDevice device)
+        public void LoadContent()
         {
-            this.Content = content;
-            this.device = device;
 
-            for (int i = 0; i < container.Count; i++)           
-                container[i].LoadContent(content, device);
-            
+
+            for (int i = 0; i < container.Count; i++)
+                container[i].LoadContent();
         }
         //update
         public void Update()
@@ -204,10 +197,10 @@ namespace Galaxy.Gui
             }
         }
         //render
-        public void Draw(SpriteBatch target)
+        public void Draw()
         {
             for (int i = 0; i < container.Count; i++)
-                container[i].Draw(target);
+                container[i].Draw();
         }
 
     }
