@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>/home/sinox/Documents/Project/c#/monogame/Galaxy/Galaxy/Content/arial.spritefont</SourceFile>
+  <SourceTime>2025-04-01T20:12:36.0180966+02:00</SourceTime>
+  <DestFile>/home/sinox/Documents/Project/c#/monogame/Galaxy/Galaxy/Content/bin/DesktopGL/Content/arial.xnb</DestFile>
+  <DestTime>2025-04-01T21:44:02.2479284+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2024-08-16T19:05:56+02:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
