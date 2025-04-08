@@ -24,7 +24,7 @@ namespace Galaxy.VFX
             elaplsedTime+= GlobalParams.UpdateTime.ElapsedGameTime.Milliseconds;
             if (elaplsedTime > lifeTime)
                 return;
-            // GlobalParams.UpdateTime.ElapsedGameTime.Milliseconds + speed + acceleration
+            //  GlobalParams.UpdateTime.ElapsedGameTime.Milliseconds + speed + acceleration
         }
         public void Draw(){
             GlobalParams.spriteBatch.Draw(texture ,rectangle,color);

@@ -14,7 +14,8 @@ using System.Threading;
 using Project1.Games.Galaxy.component;
 using System.Collections.Generic;
 using LearnMatrix;
- namespace Galaxy
+using Galaxy.VFX.ParticalEmiter;
+namespace Galaxy
 {
     public class GalaxyMotor : Game
     {
@@ -35,6 +36,9 @@ using LearnMatrix;
         public bool started { get { return _started; } }
         protected bool _IsPlaying;
         public int raid;
+        double tm = 0;
+        List<KeyPoints> Keysize;
+        // public ParticalEmiter prt;
         public GalaxyMotor()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -49,6 +53,7 @@ using LearnMatrix;
             raid = 0;
             _IsPlaying = true;
             _pausedWorkspace = false;
+            // prt = new(8,"tr","ewf",workspace);
         }
         private void StopWorkspace()
         {
@@ -138,7 +143,6 @@ using LearnMatrix;
         {
             // TODO: Add your initialization logic here
 
-
             GlobalParams.Content = Content;
             GlobalParams.spriteBatch = _spriteBatch;
             GlobalParams.Device = GraphicsDevice;
@@ -151,7 +155,13 @@ using LearnMatrix;
             GlobalParams.Workspace = workspace;
             workspace.Initialize();
             workspace.LoadContent();
-
+            // prt.Initialize();
+            Keysize = new List<KeyPoints>(){
+                new KeyPoints { time = 0, value = 1 },
+                new KeyPoints { time = .2f, value = 3 },
+                new KeyPoints { time = .5f, value = 5 },
+                new KeyPoints { time = 1, value = 10 },
+            };
 
             //StarterUI.CreateHealthContainer(screenGui, 5);
             //CreateLoginForm();
@@ -188,12 +198,26 @@ using LearnMatrix;
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GlobalParams.spriteBatch = _spriteBatch;
+            // prt.LoadContent();
         //TODO: use this.Content to load your game content here
+        }
+
+        private void test(GameTime gameTime){
+            tm += gameTime.ElapsedGameTime.Microseconds;
+            if (tm < 2000000)
+            {
+                double normalis = tm/ 2000000;
+               double x =Utils.Lerp(Keysize[1].value ,Keysize[2].value , normalis/.3);
+               
+                
+                System.Console.WriteLine(x);
+            }
         }
 
         protected override void Update(GameTime gameTime)
         {
             UpdateTimers(gameTime);
+            test(gameTime);
             GlobalParams.UpdateTime = gameTime;
             if (Keyboard.GetState().IsKeyDown(Keys.Y) && !clicked)
             {
@@ -222,6 +246,7 @@ using LearnMatrix;
                     }
             }
             //screenGui.childrens.FindChildren<TextLable>("Points").text = "Points: " + workspace.player.points;
+            // prt.Update();
 
             base.Update(gameTime);
         }
@@ -235,6 +260,8 @@ using LearnMatrix;
                 workspace.Draw();
             //plan 1
             screenGui.Draw();
+            // prt.Draw();
+            
             base.Draw(gameTime);
         }
     }

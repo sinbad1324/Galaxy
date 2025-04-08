@@ -16,6 +16,14 @@ namespace Galaxy.modules
         private double _max;
         public double min {set{if (value > _max) throw new ArgumentOutOfRangeException(nameof(min) , "Cette (min) valeur est plus grand que le max"); _min = value;}  get{return _min;}}
         public double max {set{if (value < _min) throw new ArgumentOutOfRangeException(nameof(max) , "Cette (max) valeur est plus petit que le min"); _max = value;}  get{return _max;}}
+
+       public MinMax(double min , double max)
+        {
+            this._min = min;
+            this._max = max;
+            if (_min > _max) throw new ArgumentOutOfRangeException(nameof(min), "Cette (min) valeur est plus grand que le max");
+
+        }
     }
     public class Utils
     {
@@ -55,6 +63,10 @@ namespace Galaxy.modules
 
 
         public static float Lerp(float start, float end, float time)
+        {
+            return start + (end - start) * time;
+        }
+         public static double Lerp(double start, double end, double time)
         {
             return start + (end - start) * time;
         }
