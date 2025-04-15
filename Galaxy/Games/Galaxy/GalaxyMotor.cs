@@ -15,6 +15,7 @@ using Project1.Games.Galaxy.component;
 using System.Collections.Generic;
 using LearnMatrix;
 using Galaxy.VFX.ParticalEmiter;
+using Galaxy.modules.Maths;
 namespace Galaxy
 {
     public class GalaxyMotor : Game
@@ -28,6 +29,7 @@ namespace Galaxy
         private bool clicked;
         public int reStarted;
         private bool _pausedWorkspace;
+        private ParticalEmiter _particalEmiter;
         public bool IsPlaying
         {
             get { return _IsPlaying; }
@@ -37,7 +39,6 @@ namespace Galaxy
         protected bool _IsPlaying;
         public int raid;
         double tm = 0;
-        List<KeyPoints> Keysize;
         // public ParticalEmiter prt;
         public GalaxyMotor()
         {
@@ -132,7 +133,8 @@ namespace Galaxy
                     for (int i = 0; i < totalTime; i++)
                     {
                         Thread.Sleep(10);
-                        img.position = Utils.GetDirectionSpeed(img.position, new Vector2(GlobalParams.WINDOW_WIDHT / 2 - 150, GlobalParams.WINDOW_HEIGTH / 2 - 150), (float)totalTime, (float)i);
+                       
+                        img.position = Formules.GetDirectionSpeed(img.position, new Vector2(GlobalParams.WINDOW_WIDHT / 2 - 150, GlobalParams.WINDOW_HEIGTH / 2 - 150), (float)totalTime, (float)i);
                     }
                     Thread.Sleep(30);
                     img.Destroy();
@@ -156,13 +158,11 @@ namespace Galaxy
             workspace.Initialize();
             workspace.LoadContent();
             // prt.Initialize();
-            Keysize = new List<KeyPoints>(){
-                new KeyPoints { time = 0, value = 1 },
-                new KeyPoints { time = .2f, value = 3 },
-                new KeyPoints { time = .5f, value = 5 },
-                new KeyPoints { time = 1, value = 10 },
-            };
 
+            _particalEmiter = new ParticalEmiter(0,"","",workspace);
+            _particalEmiter.Initialize();
+            _particalEmiter.LoadContent();
+            _particalEmiter.Emit(1);
             //StarterUI.CreateHealthContainer(screenGui, 5);
             //CreateLoginForm();
             //PlayerDeath();
@@ -179,6 +179,8 @@ namespace Galaxy
             //     _pausedWorkspace = true;
             //     startbtn.Destroy();
             // };
+
+
             base.Initialize();
         }
 
@@ -202,22 +204,9 @@ namespace Galaxy
         //TODO: use this.Content to load your game content here
         }
 
-        private void test(GameTime gameTime){
-            tm += gameTime.ElapsedGameTime.Microseconds;
-            if (tm < 2000000)
-            {
-                double normalis = tm/ 2000000;
-               double x =Utils.Lerp(Keysize[1].value ,Keysize[2].value , normalis/.3);
-               
-                
-                System.Console.WriteLine(x);
-            }
-        }
-
         protected override void Update(GameTime gameTime)
         {
             UpdateTimers(gameTime);
-            test(gameTime);
             GlobalParams.UpdateTime = gameTime;
             if (Keyboard.GetState().IsKeyDown(Keys.Y) && !clicked)
             {
@@ -231,6 +220,7 @@ namespace Galaxy
                 clicked = false;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            _particalEmiter.Update();
             //Workspace
             //if (_IsPlaying && _started)
                 workspace.Update();
@@ -255,11 +245,12 @@ namespace Galaxy
         {
             GraphicsDevice.Clear(Color.Black);
             GlobalParams.DrawTime = gameTime;
+            _particalEmiter.Draw();
             // plan 2  
             //if (_IsPlaying && _started)
-                workspace.Draw();
+            // workspace.Draw();
             //plan 1
-            screenGui.Draw();
+            // screenGui.Draw();
             // prt.Draw();
             
             base.Draw(gameTime);

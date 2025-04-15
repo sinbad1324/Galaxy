@@ -1,23 +1,40 @@
 ﻿using System.Collections.Generic;
 using System;
 using Microsoft.Xna.Framework;
+using System.Linq;
+using System.Security.Cryptography;
+using LearnMatrix;
+using System.Threading;
+using Galaxy.modules.Maths;
 
 namespace Galaxy.modules
 {
+
     public struct KeyPoints
     {
-        private float _time;
-        public float time { get { return _time; } set { _time = Math.Clamp(0, value, 1); } }        public double value;
+        private double _time;
+        public double time { get { return _time; } set { _time = Math.Clamp(value, 0, 1); } }
+        public double value;
         public double env;
+        public string GetStr()
+        {
+            return $"time = {time} , value = {value} , env = {env}";
+        }
+        public KeyPoints(double valeur, double time, double env = 0)
+        {
+            this.value = valeur;
+            this.time = time;
+            this.env = env;
+        }
     }
-      public struct MinMax
+    public struct MinMax
     {
         private double _min;
         private double _max;
-        public double min {set{if (value > _max) throw new ArgumentOutOfRangeException(nameof(min) , "Cette (min) valeur est plus grand que le max"); _min = value;}  get{return _min;}}
-        public double max {set{if (value < _min) throw new ArgumentOutOfRangeException(nameof(max) , "Cette (max) valeur est plus petit que le min"); _max = value;}  get{return _max;}}
+        public double min { set { if (value > _max) throw new ArgumentOutOfRangeException(nameof(min), "Cette (min) valeur est plus grand que le max"); _min = value; } get { return _min; } }
+        public double max { set { if (value < _min) throw new ArgumentOutOfRangeException(nameof(max), "Cette (max) valeur est plus petit que le min"); _max = value; } get { return _max; } }
 
-       public MinMax(double min , double max)
+        public MinMax(double min, double max)
         {
             this._min = min;
             this._max = max;
@@ -25,19 +42,69 @@ namespace Galaxy.modules
 
         }
     }
+    public class KeyPointSequence
+    {
+        public List<KeyPoints> keys;
+        public KeyPointSequence()
+        {
+            keys = new List<KeyPoints>();
+        }
+
+        public void Add(KeyPoints k)
+        {
+            if (keys.Count > 21) return;
+            keys.Add(k);
+            Sort();
+        }
+
+        public void Sort()
+        {
+            keys = keys.OrderBy(k => k.time).ToList();
+        }
+
+        public void Sequnce(double totalTime, Action<KeyPoints> callback)
+        {
+            new Thread(() =>
+            {
+                double currentTime = 0;
+                int i = 0;
+                while (currentTime <= totalTime && i < this.keys.Count - 1)
+                {
+                    if (GlobalParams.UpdateTime != null)
+                    {
+                        currentTime += GlobalParams.UpdateTime.ElapsedGameTime.Milliseconds;
+                        double normalis = currentTime / totalTime;
+                        KeyPoints key1 = this.keys[i];
+                        KeyPoints key2 = this.keys[i + 1];
+                        if (normalis >= key2.time)
+                            i++;
+                        callback(new KeyPoints(Formules.InterpolationLinaire(key1, key2, normalis), normalis, 0));
+                    }
+                }
+            }).Start();
+        }
+
+
+        private int i = 0;
+        public double InUpdate(double normalis)
+        {
+            if (i < this.keys.Count - 1)
+            {
+                KeyPoints key1 = this.keys[i];
+                KeyPoints key2 = this.keys[i + 1];
+                if (normalis >= key2.time)
+                    i++;
+                return Formules.InterpolationLinaire(key1, key2, normalis);
+            }
+            else
+            {
+                i = 0;
+            }
+            return 0;
+        }
+    }
     public class Utils
     {
-        //public static bool Intersection(Vector2 Position , Vector2 Size , Vector2 PointCompare) {
-        //     float start = Position.Length();     
-        //     float disance = PointCompare.Length() - start;
-        //     if (disance >= 0 && PointCompare.X <= (Position.X+Size.X) && PointCompare.Y <= (Position.Y + Size.Y))
-        //     {
-        //     return true;
-
-        //     }
-        //     return false;
-        // }
-
         public static void Print(string separator, params object[] args)
         {
             string affichage = "";
@@ -45,47 +112,6 @@ namespace Galaxy.modules
                 if (i > 0)
                     affichage += "_" + affichage;
             Console.WriteLine(affichage);
-        }
-
-
-        public static Vector2 GetDirectionSpeed(Vector2 a, Vector2 b, float totalTime, float currentTime)
-        {
-            //float clampedTime = Math.Min(currentTime, totalTime);
-
-            Vector2 dir = Vector2.Normalize(b - a);
-
-            float distance = (b - a).Length() / totalTime;
-            Vector2 newPos = (a + dir * (distance * currentTime));
-
-            return float.IsNaN(newPos.X) == true || float.IsNaN(newPos.Y) == true ? b : newPos;
-        }
-
-
-
-        public static float Lerp(float start, float end, float time)
-        {
-            return start + (end - start) * time;
-        }
-         public static double Lerp(double start, double end, double time)
-        {
-            return start + (end - start) * time;
-        }
-
-        public static Color GetColorDarker(Color color, double factor)
-        {
-            if (factor < 0 || factor > 1)
-                return color;
-            int r = (int)(factor * color.R);
-            int g = (int)(factor * color.G);
-            int b = (int)(factor * color.B);
-            return new Color(r, g, b);
-        }
-
-        static public Random random = new Random();
-
-        static public Color randomColor()
-        {
-            return new Color(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256));
         }
         static public Dictionary<string, float> GetSegements(Vector2 Position, Vector2 size)
         {
@@ -96,17 +122,5 @@ namespace Galaxy.modules
                 { "bottom", Position.Y + size.Y / 2 }
             };
         }
-        static public Vector2 CubicBezier(float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
-        {
-            float u = 1 - t;
-            float tt = t * t;
-            float uu = u * u;
-            float uuu = uu * u;
-            float ttt = tt * t;
-
-            Vector2 result = (uuu * p0) + (3 * uu * t * p1) + (3 * u * tt * p2) + (ttt * p3);
-            return result;
-        }
-
     }
 }

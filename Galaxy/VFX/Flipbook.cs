@@ -83,7 +83,6 @@ namespace Galaxy.VFX
             activeFrame = 0;
 
         }
-
         public void Stop()
         {
             Pause();
@@ -92,17 +91,14 @@ namespace Galaxy.VFX
             if (isFinishedDestroy)
                 Destroy();
         }
-
         public void Play()
         {
              isPaused = false;
         }
-
         public void Pause()
         {
             isPaused = true;
         }
-
         public Rectangle Rectangle()
         {
             int x = Convert.ToInt32(imageSize.X / columns);

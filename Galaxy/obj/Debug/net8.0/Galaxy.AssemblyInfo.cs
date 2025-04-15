@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Galaxy")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0adfe847423647f012b5fb7520761453668cc7a0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a63a6708517f7ce952b94d2a51161c229eb142a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Galaxy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Galaxy")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

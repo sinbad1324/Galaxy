@@ -103,7 +103,7 @@ namespace Galaxy.Gui.Frames
         public override void Initialize()
         {
             base.Initialize();
-            scrollColor = Utils.GetColorDarker(bgColor, .7);
+            scrollColor = Colors.GetColorDarker(bgColor, .7);
             Axe = ScrollingFrameDirection.Y;
 
             scrollFrame = new Rectangle((int)AxePosition.X, (int)AxePosition.Y, (int)AxeSize.X, (int)AxeSize.Y);

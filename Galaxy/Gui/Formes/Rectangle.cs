@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Galaxy.modules;
+using Galaxy.modules.Maths;
 
 
 namespace LearnMatrix
@@ -320,7 +321,7 @@ namespace LearnMatrix
             for (int i = 0; i <= data.segments; i++)
             {
                 float t = (float)i / data.segments;
-                Vector2 vector = Utils.CubicBezier(
+                Vector2 vector = Formules.CubicBezier(
                     t,
                     new Vector2(data.arc.X, data.Y),
                     new Vector2(data.arc.X, data.y),
